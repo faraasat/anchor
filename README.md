@@ -1,15 +1,15 @@
 # Anchor ⚓
 
-<center>
-   <img src"https://github.com/faraasat/anchor/blob/main/assets/images/icon.png" />
-</center>
+<div align="center">
+  <img src="/assets/images/icon.png" alt="MirmirOps Logo" width="256" height="256">
 
-> **A beautiful, AI-powered life companion** — Smart reminders that adapt to your life, with contextual awareness, household collaboration, and delightful micro-interactions.
+**A beautiful, AI-powered life companion** — Smart reminders that adapt to your life, with contextual awareness, household collaboration, and delightful micro-interactions.
 
 [![React Native](https://img.shields.io/badge/React%20Native-0.81.5-blue.svg)](https://reactnative.dev/)
 [![Expo](https://img.shields.io/badge/Expo-54.0.21-000020.svg)](https://expo.dev/)
 [![TypeScript](https://img.shields.io/badge/TypeScript-5.9.2-blue.svg)](https://www.typescriptlang.org/)
 [![License](https://img.shields.io/badge/license-MIT-green.svg)](LICENSE)
+</div>
 
 ---
 
