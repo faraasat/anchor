@@ -1,4 +1,4 @@
-// AI-powered natural language reminder parser using @fastshot/ai
+// AI-powered natural language reminder parser using Groq AI
 import { generateText } from '@/lib/groq';
 import { AIParseResult, TagType, RecurrenceRule, RecurrenceType } from '@/types/reminder';
 import { parseRecurrenceFromText } from './recurrence';

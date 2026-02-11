@@ -49,7 +49,6 @@ export default function RootLayout() {
     <>
       <StatusBar style={colorScheme === 'dark' ? 'light' : 'dark'} />
       <AuthProvider
-        supabaseClient={supabase}
         routes={{
           login: '/auth',
           afterLogin: '/(tabs)',

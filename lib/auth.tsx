@@ -1,5 +1,6 @@
 // Supabase Auth Hooks and Provider
 import React, { createContext, useContext, useEffect, useState } from 'react';
+import { View, Text, ActivityIndicator } from 'react-native';
 import { Session, User, AuthError } from '@supabase/supabase-js';
 import { useRouter, useSegments } from 'expo-router';
 import { supabase } from './supabase';
@@ -55,10 +56,10 @@ export function AuthProvider({
 
     if (!user && !inAuthGroup) {
       // Redirect to login
-      router.replace(routes.login);
+      router.replace(routes.login as any);
     } else if (user && inAuthGroup) {
       // Redirect to main app
-      router.replace(routes.afterLogin);
+      router.replace(routes.afterLogin as any);
     }
   }, [user, segments, isLoading]);
 
@@ -123,7 +124,7 @@ export function AuthProvider({
       if (error) throw error;
       setSession(null);
       setUser(null);
-      router.replace(routes.login);
+      router.replace(routes.login as any);
     } catch (err: any) {
       setError(err);
       throw err;
@@ -194,9 +195,10 @@ export function AuthCallbackPage({
 
   if (loading) {
     return (
-      <div style={{ display: 'flex', justifyContent: 'center', alignItems: 'center', height: '100vh' }}>
-        {loadingText}
-      </div>
+      <View style={{ flex: 1, justifyContent: 'center', alignItems: 'center' }}>
+        <ActivityIndicator size="large" />
+        <Text style={{ marginTop: 16 }}>{loadingText}</Text>
+      </View>
     );
   }
 
