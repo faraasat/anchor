@@ -473,7 +473,7 @@ const styles = StyleSheet.create({
   emptySubtitle: {
     fontSize: Typography.size.base,
     textAlign: 'center',
-    maxWidth: SCREEN_WIDTH - Spacing.xl * 4,
+    paddingHorizontal: Spacing.xl * 2,
   },
   tips: {
     paddingHorizontal: Spacing.lg,

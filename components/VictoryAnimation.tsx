@@ -38,10 +38,10 @@ interface ConfettiPiece {
 
 const CONFETTI_COLORS = ['#FFD700', '#FF6B9D', '#4AD4CA', '#B8935F', '#FFC947'];
 
-function generateConfetti(count: number): ConfettiPiece[] {
+function generateConfetti(count: number, screenWidth: number): ConfettiPiece[] {
   return Array.from({ length: count }, (_, i) => ({
     id: i,
-    x: Math.random() * SCREEN_WIDTH,
+    x: Math.random() * screenWidth,
     y: -50 - Math.random() * 200,
     rotation: Math.random() * 360,
     color: CONFETTI_COLORS[Math.floor(Math.random() * CONFETTI_COLORS.length)],
@@ -50,7 +50,7 @@ function generateConfetti(count: number): ConfettiPiece[] {
   }));
 }
 
-function ConfettiPiece({ piece }: { piece: ConfettiPiece }) {
+function ConfettiPiece({ piece, screenHeight }: { piece: ConfettiPiece; screenHeight: number }) {
   const translateY = useSharedValue(piece.y);
   const translateX = useSharedValue(0);
   const rotate = useSharedValue(piece.rotation);
@@ -64,7 +64,7 @@ function ConfettiPiece({ piece }: { piece: ConfettiPiece }) {
 
     translateY.value = withDelay(
       piece.delay,
-      withTiming(SCREEN_HEIGHT + 100, {
+      withTiming(screenHeight + 100, {
         duration: 3000 + Math.random() * 2000,
         easing: Easing.bezier(0.25, 0.1, 0.25, 1),
       })
@@ -124,7 +124,7 @@ export function VictoryAnimation({
   const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
   const scale = useSharedValue(0);
   const badgeRotate = useSharedValue(-180);
-  const [confetti] = useState(() => generateConfetti(60));
+  const [confetti] = useState(() => generateConfetti(60, SCREEN_WIDTH));
 
   useEffect(() => {
     if (visible) {
@@ -178,7 +178,7 @@ export function VictoryAnimation({
       <BlurView intensity={60} tint="dark" style={styles.overlay}>
         {/* Confetti */}
         {confetti.map((piece) => (
-          <ConfettiPiece key={piece.id} piece={piece} />
+          <ConfettiPiece key={piece.id} piece={piece} screenHeight={SCREEN_HEIGHT} />
         ))}
 
         {/* Victory Badge */}

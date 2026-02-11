@@ -1,6 +1,6 @@
 ## Product concept: Anchor (cross-platform “power reminders” + life dashboard)
 
-A beautiful reminders system that stays identical across iOS + Android, with true sync, custom snoozes from notifications, and powerful recurring rules. Around that core, Anchor adds an emotionally engaging “day companion” layer: AI planning, insights, wellness micro-tools, and contextual “near you” signals (weather/traffic/events) that improve reminder timing—without making the reminders feature harder to use.
+A beautiful reminders system, with true sync, custom snoozes from notifications, and powerful recurring rules. Around that core, Anchor adds an emotionally engaging “day companion” layer: AI planning, insights, wellness micro-tools, and contextual “near you” signals (weather/traffic/events) that improve reminder timing—without making the reminders feature harder to use.
 
 ---
 

@@ -362,7 +362,6 @@ const styles = StyleSheet.create({
     gap: Spacing.md,
     padding: Spacing.lg,
     borderRadius: BorderRadius.xl,
-    maxWidth: SCREEN_WIDTH - Spacing.xl * 2,
     marginBottom: Spacing.lg,
   },
   transcriptText: {
@@ -375,7 +374,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.12)',
     padding: Spacing.lg,
     borderRadius: BorderRadius.xl,
-    maxWidth: SCREEN_WIDTH - Spacing.xl * 2,
     marginBottom: Spacing.lg,
   },
   processingHeader: {
@@ -408,7 +406,6 @@ const styles = StyleSheet.create({
     backgroundColor: 'rgba(255, 255, 255, 0.08)',
     padding: Spacing.md,
     borderRadius: BorderRadius.md,
-    maxWidth: SCREEN_WIDTH - Spacing.xl * 2,
     marginBottom: Spacing.xl,
   },
   suggestionText: {

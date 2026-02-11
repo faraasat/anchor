@@ -138,4 +138,40 @@ export class LocalStorageService {
       return null;
     }
   }
+
+  /**
+   * Get a value from storage by key
+   */
+  static async get(key: string): Promise<string | null> {
+    try {
+      return await AsyncStorage.getItem(key);
+    } catch (error) {
+      console.error(`Error getting value for key ${key}:`, error);
+      return null;
+    }
+  }
+
+  /**
+   * Set a value in storage by key
+   */
+  static async set(key: string, value: string): Promise<void> {
+    try {
+      await AsyncStorage.setItem(key, value);
+    } catch (error) {
+      console.error(`Error setting value for key ${key}:`, error);
+      throw error;
+    }
+  }
+
+  /**
+   * Remove a value from storage by key
+   */
+  static async remove(key: string): Promise<void> {
+    try {
+      await AsyncStorage.removeItem(key);
+    } catch (error) {
+      console.error(`Error removing value for key ${key}:`, error);
+      throw error;
+    }
+  }
 }
