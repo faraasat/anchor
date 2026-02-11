@@ -51,11 +51,13 @@ Anchor is built with a **modern, mobile-first architecture** emphasizing offline
 ### Frontend Layer
 
 #### Core Framework
+
 - **React Native 0.81.5**: Cross-platform foundation
 - **Expo 54**: Development tooling, OTA updates, managed workflow
 - **TypeScript 5.9.2**: Type safety, improved DX, better refactoring
 
 #### UI & Animations
+
 - **React Native Reanimated 4**: 60fps animations on native thread
 - **React Native Gesture Handler**: Native touch handling
 - **Lottie React Native**: Vector animations for success moments
@@ -63,10 +65,12 @@ Anchor is built with a **modern, mobile-first architecture** emphasizing offline
 - **Expo Blur**: Native blur effects for glassmorphism
 
 #### Navigation & Routing
+
 - **Expo Router 6**: File-based routing (like Next.js)
 - **React Navigation 7**: Under the hood, tab navigation
 
 #### State Management
+
 - **React Context API**: Global state (auth, theme, household)
 - **Custom Hooks**: Encapsulated state logic
 - **Optimistic UI Pattern**: Instant feedback, background sync
@@ -74,12 +78,14 @@ Anchor is built with a **modern, mobile-first architecture** emphasizing offline
 ### Backend Layer
 
 #### Database & Authentication
+
 - **Supabase PostgreSQL**: Relational database with Row Level Security (RLS)
 - **Supabase Auth**: Email/password, OAuth, magic links
 - **Supabase Realtime**: WebSocket subscriptions for live updates
 - **Supabase Storage**: Avatar uploads, attachments (future)
 
 **Schema Overview:**
+
 ```sql
 -- Core tables
 users (id, email, created_at, metadata)
@@ -96,11 +102,13 @@ insights_cache (id, user_id, metric_type, value, calculated_at)
 ```
 
 **RLS Policies:**
+
 - Users can only read/write their own data
 - Household members can read/write shared household reminders
 - Public stacks readable by all, writable only by owner
 
 #### AI & Intelligence Layer
+
 - **Groq AI**: Ultra-fast LLM inference (llama-3.3-70b-versatile)
   - Voice command parsing
   - Smart scheduling suggestions
@@ -110,6 +118,7 @@ insights_cache (id, user_id, metric_type, value, calculated_at)
 - **Fallback Strategies**: Cached responses if rate limited
 
 #### Subscription Management
+
 - **RevenueCat**: Cross-platform subscription management
   - iOS StoreKit 2 integration
   - Android Google Play Billing 5
@@ -120,21 +129,25 @@ insights_cache (id, user_id, metric_type, value, calculated_at)
 ### Mobile-Specific APIs
 
 #### Location & Context
+
 - **Expo Location**: Geofencing, background location
 - **Expo Task Manager**: Background location tracking
 - **Weather Service**: OpenWeatherMap API for context
 
 #### Notifications
+
 - **Expo Notifications**: Local & push notifications
 - **Custom Snooze Logic**: Timezone-aware scheduling
 - **Notification Actions**: Complete, snooze from notification
 
 #### Device Integration
+
 - **Expo Calendar**: Read calendar events for conflict detection
 - **Expo Sensors**: Gyroscope for parallax backgrounds
 - **Expo Haptics**: Carefully choreographed vibrations
 
 #### Wellness Features
+
 - **Expo AV** (deprecated): Audio for meditation timer (migrating to expo-audio)
 - **Expo Image Picker**: Profile avatars, photo tasks
 - **AsyncStorage**: Water tracking, meditation sessions
@@ -223,30 +236,30 @@ insights_cache (id, user_id, metric_type, value, calculated_at)
 
 ### Implementation Code
 
-**Initialization (app/_layout.tsx):**
+**Initialization (app/\_layout.tsx):**
 
 ```typescript
-import Purchases from 'react-native-purchases';
-import { Platform } from 'react-native';
+import Purchases from "react-native-purchases";
+import { Platform } from "react-native";
 
 useEffect(() => {
   async function setupRevenueCat() {
-    if (Platform.OS === 'ios') {
+    if (Platform.OS === "ios") {
       await Purchases.configure({
-        apiKey: process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY!
+        apiKey: process.env.EXPO_PUBLIC_REVENUECAT_IOS_KEY!,
       });
-    } else if (Platform.OS === 'android') {
+    } else if (Platform.OS === "android") {
       await Purchases.configure({
-        apiKey: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY!
+        apiKey: process.env.EXPO_PUBLIC_REVENUECAT_ANDROID_KEY!,
       });
     }
-    
+
     // Set user ID for cross-device entitlement sync
     if (user?.id) {
       await Purchases.logIn(user.id);
     }
   }
-  
+
   setupRevenueCat();
 }, [user]);
 ```
@@ -257,39 +270,38 @@ useEffect(() => {
 const handlePurchase = async (productId: string) => {
   try {
     setIsProcessing(true);
-    
+
     // Fetch offerings
     const offerings = await Purchases.getOfferings();
     const product = offerings.current?.availablePackages.find(
-      pkg => pkg.product.identifier === productId
+      (pkg) => pkg.product.identifier === productId,
     );
-    
-    if (!product) throw new Error('Product not found');
-    
+
+    if (!product) throw new Error("Product not found");
+
     // Purchase
     const { customerInfo } = await Purchases.purchasePackage(product);
-    
+
     // Check entitlements (instant)
-    const isPro = customerInfo.entitlements.active['pro'] !== undefined;
-    
+    const isPro = customerInfo.entitlements.active["pro"] !== undefined;
+
     if (isPro) {
       // Sync to Supabase in background
       await syncSubscriptionToSupabase(customerInfo);
-      
+
       // Update local state
       setProStatus(true);
-      
+
       // Celebrate
       Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       showSuccessAnimation();
     }
-    
   } catch (error) {
     if (error.userCancelled) {
       // User tapped "Cancel" - silent fail
       return;
     }
-    Alert.alert('Purchase Failed', error.message);
+    Alert.alert("Purchase Failed", error.message);
   } finally {
     setIsProcessing(false);
   }
@@ -303,12 +315,12 @@ export function useProStatus() {
   const [isPro, setIsPro] = useState(false);
   const [isLoading, setIsLoading] = useState(true);
   const [expiresAt, setExpiresAt] = useState<Date | null>(null);
-  
+
   useEffect(() => {
     async function checkStatus() {
       try {
         // Check local cache first
-        const cached = await AsyncStorage.getItem('pro_status');
+        const cached = await AsyncStorage.getItem("pro_status");
         if (cached) {
           const { isPro, expiresAt } = JSON.parse(cached);
           if (new Date(expiresAt) > new Date()) {
@@ -319,52 +331,56 @@ export function useProStatus() {
             return;
           }
         }
-        
+
         // Fetch from RevenueCat
         await refreshFromRevenueCat();
-        
       } catch (error) {
-        console.error('Pro status check failed:', error);
+        console.error("Pro status check failed:", error);
         setIsLoading(false);
       }
     }
-    
+
     async function refreshFromRevenueCat() {
       const customerInfo = await Purchases.getCustomerInfo();
-      const hasProEntitlement = customerInfo.entitlements.active['pro'] !== undefined;
-      const hasFamilyEntitlement = customerInfo.entitlements.active['family'] !== undefined;
-      
+      const hasProEntitlement =
+        customerInfo.entitlements.active["pro"] !== undefined;
+      const hasFamilyEntitlement =
+        customerInfo.entitlements.active["family"] !== undefined;
+
       const isPro = hasProEntitlement || hasFamilyEntitlement;
-      const expiresAt = hasProEntitlement 
-        ? customerInfo.entitlements.active['pro'].expirationDate
+      const expiresAt = hasProEntitlement
+        ? customerInfo.entitlements.active["pro"].expirationDate
         : hasFamilyEntitlement
-        ? customerInfo.entitlements.active['family'].expirationDate
-        : null;
-      
+          ? customerInfo.entitlements.active["family"].expirationDate
+          : null;
+
       setIsPro(isPro);
       setExpiresAt(expiresAt ? new Date(expiresAt) : null);
-      
+
       // Cache for 5 minutes
-      await AsyncStorage.setItem('pro_status', JSON.stringify({
-        isPro,
-        expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString()
-      }));
-      
+      await AsyncStorage.setItem(
+        "pro_status",
+        JSON.stringify({
+          isPro,
+          expiresAt: new Date(Date.now() + 5 * 60 * 1000).toISOString(),
+        }),
+      );
+
       setIsLoading(false);
     }
-    
+
     checkStatus();
-    
+
     // Refresh on app foreground
-    const subscription = AppState.addEventListener('change', (state) => {
-      if (state === 'active') {
+    const subscription = AppState.addEventListener("change", (state) => {
+      if (state === "active") {
         refreshFromRevenueCat();
       }
     });
-    
+
     return () => subscription.remove();
   }, []);
-  
+
   return { isPro, isLoading, expiresAt };
 }
 ```
@@ -373,55 +389,56 @@ export function useProStatus() {
 
 ```typescript
 // supabase/functions/revenuecat-webhook/index.ts
-import { serve } from 'https://deno.land/std@0.168.0/http/server.ts';
-import { createClient } from 'https://esm.sh/@supabase/supabase-js@2';
+import { serve } from "https://deno.land/std@0.168.0/http/server.ts";
+import { createClient } from "https://esm.sh/@supabase/supabase-js@2";
 
 serve(async (req) => {
   const payload = await req.json();
   const { event } = payload;
-  
+
   // Verify webhook signature
-  const signature = req.headers.get('X-RevenueCat-Signature');
+  const signature = req.headers.get("X-RevenueCat-Signature");
   if (!verifySignature(signature, payload)) {
-    return new Response('Invalid signature', { status: 401 });
+    return new Response("Invalid signature", { status: 401 });
   }
-  
+
   const supabase = createClient(
-    Deno.env.get('SUPABASE_URL')!,
-    Deno.env.get('SUPABASE_SERVICE_ROLE_KEY')!
+    Deno.env.get("SUPABASE_URL")!,
+    Deno.env.get("SUPABASE_SERVICE_ROLE_KEY")!,
   );
-  
-  const { app_user_id, product_id, purchase_date, expiration_date, is_trial } = event;
-  
+
+  const { app_user_id, product_id, purchase_date, expiration_date, is_trial } =
+    event;
+
   // Upsert subscription
-  await supabase.from('subscriptions').upsert({
+  await supabase.from("subscriptions").upsert({
     user_id: app_user_id,
     product_id,
-    status: 'active',
+    status: "active",
     platform: event.store,
     purchased_at: purchase_date,
     expires_at: expiration_date,
     is_trial,
-    updated_at: new Date().toISOString()
+    updated_at: new Date().toISOString(),
   });
-  
+
   // Handle specific events
   switch (event.type) {
-    case 'INITIAL_PURCHASE':
+    case "INITIAL_PURCHASE":
       await sendWelcomeEmail(app_user_id);
       break;
-    case 'RENEWAL':
+    case "RENEWAL":
       // Update streak, send thank you
       break;
-    case 'CANCELLATION':
+    case "CANCELLATION":
       await sendCancellationSurvey(app_user_id);
       break;
-    case 'BILLING_ISSUE':
+    case "BILLING_ISSUE":
       await sendPaymentFailureEmail(app_user_id);
       break;
   }
-  
-  return new Response('OK', { status: 200 });
+
+  return new Response("OK", { status: 200 });
 });
 ```
 
@@ -434,23 +451,23 @@ export class LimitedModeService {
   static async canUseAIFeature(userId: string): Promise<boolean> {
     const { isPro } = await checkProStatus(userId);
     if (isPro) return true;
-    
+
     // Free users: 5 AI requests per day
-    const today = new Date().toISOString().split('T')[0];
+    const today = new Date().toISOString().split("T")[0];
     const { count } = await supabase
-      .from('ai_requests_log')
-      .select('*', { count: 'exact', head: true })
-      .eq('user_id', userId)
-      .gte('created_at', today);
-    
+      .from("ai_requests_log")
+      .select("*", { count: "exact", head: true })
+      .eq("user_id", userId)
+      .gte("created_at", today);
+
     return count < 5;
   }
-  
+
   static async incrementAIRequestCount(userId: string): Promise<void> {
-    await supabase.from('ai_requests_log').insert({
+    await supabase.from("ai_requests_log").insert({
       user_id: userId,
-      request_type: 'voice_command',
-      created_at: new Date().toISOString()
+      request_type: "voice_command",
+      created_at: new Date().toISOString(),
     });
   }
 }
@@ -473,7 +490,7 @@ export class LimitedModeService {
    - Check network connectivity
    - POST to Supabase API
    - If success: no-op (UI already updated)
-   - If failure: 
+   - If failure:
      - Add to offline queue
      - Show subtle "Syncing..." indicator
      - Retry on reconnection
@@ -491,17 +508,20 @@ export class LimitedModeService {
 
 1. Speech-to-text (device native API)
 2. Send text to Groq AI with prompt:
-   ```
-   Parse this reminder into structured data:
-   - title (string)
-   - location trigger (if any)
-   - due date/time
-   - recurrence pattern
-   - priority
-   
-   Input: "{user_text}"
-   Output: JSON
-   ```
+```
+
+Parse this reminder into structured data:
+
+- title (string)
+- location trigger (if any)
+- due date/time
+- recurrence pattern
+- priority
+
+Input: "{user_text}"
+Output: JSON
+
+```
 3. Receive parsed data (< 1s with Groq)
 4. Pre-fill reminder form with parsed data
 5. User confirms or edits
@@ -529,18 +549,21 @@ export class LimitedModeService {
 ## Performance Optimizations
 
 ### Animation Performance
+
 - **Reanimated worklets**: Run animations on native thread (60fps guaranteed)
 - **Memoization**: useMemo, useCallback for expensive renders
 - **Lazy loading**: Components load on-demand (React.lazy + Suspense)
 - **Image optimization**: Expo Image with blurhash placeholders
 
 ### Network Optimization
+
 - **Optimistic UI**: Instant feedback, sync in background
 - **Request batching**: Batch multiple updates into single API call
 - **Caching**: 5-minute TTL for entitlements, 1-hour for insights
 - **Offline queue**: Store failed requests, retry on reconnection
 
 ### Database Optimization
+
 - **Indexes**: On user_id, due_date, status for fast queries
 - **Materialized views**: Pre-computed insights (refreshed daily)
 - **Connection pooling**: Supabase Pooler for high concurrency
@@ -551,16 +574,19 @@ export class LimitedModeService {
 ## Security & Privacy
 
 ### Authentication
+
 - **Supabase Auth**: Industry-standard OAuth 2.0 + JWT
 - **Secure storage**: Tokens stored in iOS Keychain / Android Keystore
 - **Biometric unlock**: Face ID / Touch ID optional
 
 ### Data Encryption
+
 - **In transit**: TLS 1.3 for all API calls
 - **At rest**: Supabase encrypts all data (AES-256)
 - **Local storage**: AsyncStorage is sandboxed per app
 
 ### Privacy Features
+
 - **Privacy Veil**: Blur sensitive content in app switcher
 - **Local mode**: All data stored locally, zero sync (optional)
 - **Minimal analytics**: No tracking, only crash reports (opt-in)
@@ -570,6 +596,7 @@ export class LimitedModeService {
 ## Deployment & CI/CD
 
 ### Build Pipeline
+
 ```bash
 # Development
 yarn start → Expo Go (instant preview)
@@ -583,12 +610,14 @@ eas submit --platform all → Automated submission
 ```
 
 ### OTA Updates (Expo Updates)
+
 - **Config changes**: Instant (no app store review)
 - **JavaScript/TypeScript**: Instant deployment
 - **Native code changes**: Requires new build
 - **Rollback**: Instant revert to previous version
 
 ### Monitoring
+
 - **Sentry**: Crash reporting, error tracking
 - **Expo Analytics**: Usage metrics, screen views
 - **RevenueCat Dashboard**: Subscription analytics
@@ -605,6 +634,6 @@ Anchor's architecture prioritizes **user experience above all else**:
 ✅ **Instant feedback**: Optimistic UI patterns  
 ✅ **Secure by default**: RLS, encryption, minimal data collection  
 ✅ **Scalable**: Serverless architecture, edge functions  
-✅ **Cost-effective**: Supabase free tier covers 50k users, Groq AI at $0.05/1M tokens  
+✅ **Cost-effective**: Supabase free tier covers 50k users, Groq AI at $0.05/1M tokens
 
 The combination of React Native + Expo + Supabase + RevenueCat provides a **battle-tested tech stack** used by companies like Duolingo, Clubhouse, and countless indie success stories. This allows rapid feature development while maintaining production-grade reliability.

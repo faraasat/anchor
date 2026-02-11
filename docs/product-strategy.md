@@ -27,18 +27,21 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 ### Primary: Productivity Enthusiasts (Early Adopters)
 
 **Demographics:**
+
 - Age: 25-45
 - Income: $60K-150K+
 - Tech-savvy, early adopters of productivity tools
 - Already paying for multiple subscriptions (Notion, Things, Fantastical, Headspace)
 
 **Psychographics:**
+
 - Value efficiency but reject hustle culture
 - Care about design and user experience
 - Willing to pay premium for tools that "just work"
 - Share tips in communities (Reddit's r/productivity, Hacker News, Twitter)
 
 **Pain Points:**
+
 - Juggling 3-5 productivity apps with incomplete integration
 - Feeling overwhelmed by notifications that ignore context
 - Wanting to include partners/family without forcing them into complex systems
@@ -47,12 +50,14 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 ### Secondary: Busy Households (Expansion Market)
 
 **Demographics:**
+
 - Dual-income families with kids
 - Age: 30-50
 - Household income: $80K-200K
 - Often one "organizer" and one "reluctant participant"
 
 **Needs:**
+
 - Simple shared task management (shopping lists, chores, errands)
 - Location-triggered reminders ("Buy milk when someone's near Target")
 - Gentle nudges without nagging
@@ -61,12 +66,14 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 ### Tertiary: Freelancers & Solopreneurs (High LTV)
 
 **Demographics:**
+
 - Self-employed knowledge workers
 - Age: 25-40
 - Income: Highly variable
 - Work from home or co-working spaces
 
 **Needs:**
+
 - Energy/burnout tracking (Neural Coach feature)
 - Time-blocking with context awareness
 - Client task organization without complexity
@@ -79,9 +86,11 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 ### Freemium Model with Clear Value Ladder
 
 #### Free Tier: "Anchor Lite"
+
 **Goal:** Hook users with core value, create daily habit
 
 **Included:**
+
 - ✅ Unlimited basic reminders
 - ✅ Today view with timeline
 - ✅ Manual location triggers (5 anchor points max)
@@ -91,6 +100,7 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 - ✅ Voice input (5 commands/day)
 
 **Limitations:**
+
 - 🚫 Limited AI requests (5/day)
 - 🚫 Basic insights only (weekly summary)
 - 🚫 No community stack imports
@@ -98,9 +108,11 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 - 🚫 No evening reflections
 
 #### Pro Tier: "Anchor Pro" — $6.99/month or $59.99/year (30% savings)
+
 **Goal:** Convert power users who hit friction points
 
 **Premium Features:**
+
 - 🎯 **Unlimited AI Intelligence**
   - Unlimited voice commands
   - Neural Coach with burnout detection
@@ -132,9 +144,11 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
   - Early access to beta features
 
 #### Family Plan: $11.99/month or $99.99/year
+
 **Goal:** Reduce churn, increase household penetration
 
 **Included:**
+
 - All Pro features for up to 5 household members
 - Shared analytics dashboard
 - Unified billing
@@ -145,6 +159,7 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 ## Revenue Projections (Conservative)
 
 ### Year 1 Target: 10,000 Users
+
 - Free users: 7,000 (70%)
 - Pro Monthly: 2,400 (24%) → $16,776/month
 - Pro Annual: 400 (4%) → $1,999/month
@@ -154,6 +169,7 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 **Annual ARR:** ~$245,292
 
 ### Year 2 Target: 50,000 Users
+
 - Free users: 32,500 (65%)
 - Pro Monthly: 11,000 (22%) → $76,890/month
 - Pro Annual: 4,500 (9%) → $22,497/month
@@ -167,22 +183,26 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 ## Growth Strategy
 
 ### Phase 1: Product Hunt & Early Adopters (Months 1-3)
+
 - Launch on Product Hunt with story-driven approach
 - Target: 1,000 signups, 15% conversion to Pro
 - Focus: Reddit (r/productivity, r/getdisciplined), Hacker News, Twitter
 
 ### Phase 2: Content & SEO (Months 4-9)
+
 - Comparison content: "Anchor vs Things 3", "Best AI Reminder Apps"
 - Use cases: "How to Use Anchor for ADHD", "Family Task Management"
 - Target: Organic search traffic, 3,000 monthly signups
 
 ### Phase 3: Community Loop (Months 10-18)
+
 - Stack sharing becomes viral loop
 - Featured stacks on homepage
 - Creator program: Top stack creators get free Pro
 - Target: 20% of signups from shared stacks
 
 ### Phase 4: Partnerships (Year 2+)
+
 - Integration with Notion, Todoist, Things (import)
 - Smart home partnerships (Alexa, Google Home voice triggers)
 - Wellness app integrations (Headspace, Calm, Oura)
@@ -215,12 +235,14 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 ### Customer Lifetime Value (LTV)
 
 **Average Pro User:**
+
 - Month 1-6: Monthly ($6.99/month)
 - Month 7+: Annual ($59.99/year if retained)
 - Churn: 5% monthly → 45% annual retention
 - LTV (24 months): ~$140
 
 **Average Family User:**
+
 - Starts annual ($99.99/year)
 - Churn: 3% monthly → 65% annual retention
 - LTV (24 months): ~$260
@@ -231,16 +253,16 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 
 ## Competitive Positioning
 
-| Feature | Anchor | Things 3 | Todoist | Any.do |
-|---------|--------|----------|---------|--------|
-| **AI Voice Input** | ✅ Natural language | ❌ | ❌ | ⚠️ Basic |
-| **Location Awareness** | ✅ Context triggers | ❌ | ⚠️ Premium | ✅ |
-| **Household Sharing** | ✅ Real-time collab | ❌ | ⚠️ Limited | ⚠️ Limited |
-| **Wellness Integration** | ✅ Water, meditation, garden | ❌ | ❌ | ❌ |
-| **Cross-Platform Sync** | ✅ iOS, Android, Web | ⚠️ Apple only | ✅ | ✅ |
-| **Community Stacks** | ✅ Unique | ❌ | ❌ | ❌ |
-| **Burnout Detection** | ✅ Pro | ❌ | ❌ | ❌ |
-| **Price (Annual)** | $59.99 | $49.99 (one-time) | $58 | $60 |
+| Feature                  | Anchor                       | Things 3          | Todoist    | Any.do     |
+| ------------------------ | ---------------------------- | ----------------- | ---------- | ---------- |
+| **AI Voice Input**       | ✅ Natural language          | ❌                | ❌         | ⚠️ Basic   |
+| **Location Awareness**   | ✅ Context triggers          | ❌                | ⚠️ Premium | ✅         |
+| **Household Sharing**    | ✅ Real-time collab          | ❌                | ⚠️ Limited | ⚠️ Limited |
+| **Wellness Integration** | ✅ Water, meditation, garden | ❌                | ❌         | ❌         |
+| **Cross-Platform Sync**  | ✅ iOS, Android, Web         | ⚠️ Apple only     | ✅         | ✅         |
+| **Community Stacks**     | ✅ Unique                    | ❌                | ❌         | ❌         |
+| **Burnout Detection**    | ✅ Pro                       | ❌                | ❌         | ❌         |
+| **Price (Annual)**       | $59.99                       | $49.99 (one-time) | $58        | $60        |
 
 **Key Differentiator:** Only app combining AI context intelligence with emotional wellness design.
 
@@ -249,16 +271,19 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 ## Risk Mitigation
 
 ### Technical Risks
+
 - **AI Costs**: Groq pricing is competitive; fallback to cached responses if needed
 - **Location Privacy**: All processing on-device; opt-in model with clear value exchange
 - **Sync Reliability**: Supabase with optimistic UI; offline-first architecture
 
 ### Market Risks
+
 - **Things 4 Launch**: Focus on features Apple won't build (AI, Android cross-platform)
 - **Apple Reminders Improvements**: Anchor's emotional design + AI creates moat
 - **Subscription Fatigue**: Clear ROI ("Save 2 hours/week = $40 value at $25/hour wage")
 
 ### Execution Risks
+
 - **Slow Growth**: Pivot to B2B (team productivity) in Year 2 if consumer growth stalls
 - **Feature Creep**: Maintain "calm" core; advanced features gated behind settings
 - **Churn**: Focus on habit formation (daily engagement) and sunk cost (imported data)
@@ -272,26 +297,31 @@ While tools like Things 3 excel at organization and Fantastical handles calendar
 **Key Metrics by Phase:**
 
 **Acquisition:**
+
 - Monthly signups
 - Organic vs paid ratio
 - Product Hunt ranking
 
 **Activation:**
+
 - % completing onboarding
 - % creating first reminder
 - % returning Day 2, Day 7
 
 **Retention:**
+
 - Day 30 retention: 40%+
 - Month 6 retention: 25%+
 - Annual renewal rate: 70%+
 
 **Revenue:**
+
 - Free → Pro conversion: 15%+
 - MRR growth rate: 15%+ monthly (Year 1)
 - LTV:CAC ratio: 5:1+
 
 **Referral:**
+
 - % sharing stacks publicly
 - % inviting household members
 - Viral coefficient: 0.3+ (Year 2)
@@ -305,6 +335,7 @@ Anchor addresses a genuine market gap: **context-aware task management with soul
 The freemium model with clear upgrade triggers, coupled with community-driven growth loops, positions Anchor for sustainable growth in the $5B+ productivity app market.
 
 **Next Steps:**
+
 1. Launch MVP with free tier and Pro features
 2. Validate conversion rate assumptions (target: 15%)
 3. Gather qualitative feedback on "must-have" vs "nice-to-have" features
