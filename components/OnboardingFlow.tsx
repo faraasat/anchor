@@ -9,7 +9,6 @@ import {
   Pressable,
   ScrollView,
   Platform,
-  Dimensions,
 } from 'react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
@@ -28,9 +27,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useThemeEngine } from '@/contexts/ThemeEngineContext';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, Typography, BorderRadius, Shadows } from '@/constants/theme';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 export type AIPersonality = 'minimalist' | 'warm' | 'professional';
 

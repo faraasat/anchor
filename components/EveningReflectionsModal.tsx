@@ -16,11 +16,10 @@ import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
 import Animated, { FadeIn, FadeInDown, SlideInDown } from 'react-native-reanimated';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Reminder } from '@/types/reminder';
 import { NewellAI } from '@/lib/groq';
 import { Spacing, Typography, Shadows } from '@/constants/theme';
-
-const { width } = Dimensions.get('window');
 
 interface EveningReflectionsModalProps {
   visible: boolean;

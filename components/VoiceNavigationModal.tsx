@@ -25,11 +25,10 @@ import { BlurView } from 'expo-blur';
 import * as Speech from 'expo-speech';
 import { Audio } from 'expo-av';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, BorderRadius, Typography } from '@/constants/theme';
 import { HapticPatternsService, HapticPattern } from '@/services/HapticPatternsService';
 import { NewellAI } from '@/lib/groq';
-
-const { width, height } = Dimensions.get('window');
 
 interface VoiceNavigationModalProps {
   visible: boolean;
@@ -50,6 +49,7 @@ type NavigationCommand =
 
 export function VoiceNavigationModal({ visible, onClose }: VoiceNavigationModalProps) {
   const theme = useTheme();
+  const { width, height } = useWindowDimensions();
   const colorScheme = useColorScheme();
   const router = useRouter();
 

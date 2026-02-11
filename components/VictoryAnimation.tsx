@@ -1,7 +1,7 @@
 // Phase 5: Victory Animation
 // Full-screen celebration with paper-confetti effects for shared achievements
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions, Modal } from 'react-native';
+import { View, Text, StyleSheet, Modal } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -16,9 +16,8 @@ import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import { Ionicons } from '@expo/vector-icons';
 import { useThemeEngine } from '@/contexts/ThemeEngineContext';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, Typography } from '@/constants/theme';
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface VictoryAnimationProps {
   visible: boolean;
@@ -122,6 +121,7 @@ export function VictoryAnimation({
   onComplete,
 }: VictoryAnimationProps) {
   const { theme } = useThemeEngine();
+  const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
   const scale = useSharedValue(0);
   const badgeRotate = useSharedValue(-180);
   const [confetti] = useState(() => generateConfetti(60));

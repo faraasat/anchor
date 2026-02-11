@@ -1,6 +1,6 @@
 // Magnetic Button - Pulls toward touch with springy physics
 import React from 'react';
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -9,9 +9,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { LinearGradient } from 'expo-linear-gradient';
-
-const { width } = Dimensions.get('window');
 
 interface MagneticButtonProps {
   children: React.ReactNode;
@@ -30,6 +29,7 @@ export function MagneticButton({
   colors = ['#3B82F6', '#8B5CF6'],
   style,
 }: MagneticButtonProps) {
+  const { width } = useWindowDimensions();
   const translateX = useSharedValue(0);
   const translateY = useSharedValue(0);
   const scale = useSharedValue(1);

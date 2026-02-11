@@ -1,6 +1,6 @@
 // Living Background with Animated Mesh Gradients and Parallax
 import React, { useEffect, useState } from 'react';
-import { StyleSheet, Dimensions, Platform } from 'react-native';
+import { StyleSheet, Platform } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -11,12 +11,11 @@ import Animated, {
   interpolate,
 } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import {
   Gyroscope,
   GyroscopeData,
 } from 'expo-sensors';
-
-const { width, height } = Dimensions.get('window');
 
 interface LivingBackgroundProps {
   mode?: 'auto' | 'morning' | 'afternoon' | 'evening' | 'night' | 'focus';
@@ -32,6 +31,7 @@ const COLOR_PALETTES = {
 };
 
 export function LivingBackground({ mode = 'auto' }: LivingBackgroundProps) {
+  const { width, height } = useWindowDimensions();
   const [currentPalette, setCurrentPalette] = useState<string[]>(COLOR_PALETTES.morning);
 
   // Animation values for mesh gradient movement

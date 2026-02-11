@@ -1,16 +1,13 @@
 // Bento Grid Layout - Sophisticated varying card sizes for visual hierarchy
 import React from 'react';
-import { View, Text, StyleSheet, Pressable, Dimensions } from 'react-native';
+import { View, Text, StyleSheet, Pressable } from 'react-native';
 import Animated, { FadeInDown } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
 import { HapticPatternsService, HapticPattern } from '@/services/HapticPatternsService';
-
-const { width } = Dimensions.get('window');
-const cardPadding = Spacing.md;
-const cardWidth = (width - cardPadding * 3) / 2;
 
 export type BentoCardSize = 'small' | 'medium' | 'large' | 'wide' | 'tall';
 
@@ -32,6 +29,9 @@ interface BentoGridLayoutProps {
 
 export function BentoGridLayout({ cards }: BentoGridLayoutProps) {
   const theme = useTheme();
+  const { width } = useWindowDimensions();
+  const cardPadding = Spacing.md;
+  const cardWidth = (width - cardPadding * 3) / 2;
 
   const getCardDimensions = (size: BentoCardSize) => {
     switch (size) {

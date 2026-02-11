@@ -16,6 +16,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing } from '@/constants/theme';
 import { NewellAIClient } from '@/lib/groq';
 import { LineChart } from 'react-native-svg';
@@ -39,8 +40,6 @@ interface NeuralCoachModalProps {
   onThemeShift?: (theme: 'recovery' | 'normal') => void;
 }
 
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
-
 export default function NeuralCoachModal({
   visible,
   onClose,
@@ -48,6 +47,7 @@ export default function NeuralCoachModal({
   onThemeShift,
 }: NeuralCoachModalProps) {
   const theme = useTheme();
+  const { width: SCREEN_WIDTH } = useWindowDimensions();
   const [loading, setLoading] = useState(true);
   const [weeklyReport, setWeeklyReport] = useState<EnergyReport | null>(null);
   const [burnoutDetected, setBurnoutDetected] = useState(false);

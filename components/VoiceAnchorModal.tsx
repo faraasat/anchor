@@ -26,9 +26,8 @@ import Animated, {
 import * as Haptics from 'expo-haptics';
 import { BlurView } from 'expo-blur';
 import { useTheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
-
-const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = Dimensions.get('window');
 
 interface VoiceAnchorModalProps {
   visible: boolean;
@@ -75,6 +74,7 @@ export function VoiceAnchorModal({
   isProcessing = false,
 }: VoiceAnchorModalProps) {
   const theme = useTheme();
+  const { width: SCREEN_WIDTH, height: SCREEN_HEIGHT } = useWindowDimensions();
   const [isListening, setIsListening] = useState(false);
   const [transcript, setTranscript] = useState('');
   const [suggestion, setSuggestion] = useState('Try saying: "Remind me to buy coffee when I\'m near a grocery store"');

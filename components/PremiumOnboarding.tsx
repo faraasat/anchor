@@ -24,11 +24,10 @@ import LottieView from 'lottie-react-native';
 import { LinearGradient } from 'expo-linear-gradient';
 import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, BorderRadius, Typography } from '@/constants/theme';
 import { HapticPatternsService, HapticPattern } from '@/services/HapticPatternsService';
 import { NewellAI } from '@/lib/groq';
-
-const { width, height } = Dimensions.get('window');
 
 interface OnboardingStep {
   id: string;
@@ -105,6 +104,7 @@ const LIFESTYLE_QUESTIONS: LifestyleQuestion[] = [
 
 export function PremiumOnboarding({ visible, onComplete, onSkip }: PremiumOnboardingProps) {
   const theme = useTheme();
+  const { width, height } = useWindowDimensions();
 
   const [currentStep, setCurrentStep] = useState(0);
   const [showQuestions, setShowQuestions] = useState(false);

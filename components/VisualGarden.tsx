@@ -1,6 +1,6 @@
 // Visual Garden - 3D plant growth based on user progress
 import React, { useEffect, useState } from 'react';
-import { View, Text, StyleSheet, Dimensions } from 'react-native';
+import { View, Text, StyleSheet } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -14,9 +14,8 @@ import Animated, {
 import { LinearGradient } from 'expo-linear-gradient';
 import Svg, { Path, Circle, Ellipse, Defs, RadialGradient, Stop } from 'react-native-svg';
 import { useTheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, Typography } from '@/constants/theme';
-
-const { width } = Dimensions.get('window');
 
 interface VisualGardenProps {
   weeklyStreak: number; // 0-7
@@ -30,6 +29,7 @@ const PLANT_STAGES: PlantStage[] = ['seed', 'sprout', 'seedling', 'young', 'matu
 
 export function VisualGarden({ weeklyStreak, taskCompletion, level }: VisualGardenProps) {
   const theme = useTheme();
+  const { width } = useWindowDimensions();
   const [currentStage, setCurrentStage] = useState<PlantStage>('seed');
 
   // Animation values

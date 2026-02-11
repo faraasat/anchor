@@ -1,6 +1,6 @@
 // Liquid Card Transitions - Seamless expansion animations
 import React, { useEffect } from 'react';
-import { StyleSheet, Dimensions, Pressable } from 'react-native';
+import { StyleSheet, Pressable } from 'react-native';
 import Animated, {
   useSharedValue,
   useAnimatedStyle,
@@ -12,9 +12,8 @@ import Animated, {
 } from 'react-native-reanimated';
 import { Gesture, GestureDetector } from 'react-native-gesture-handler';
 import * as Haptics from 'expo-haptics';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Platform } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
 
 interface LiquidCardProps {
   children: React.ReactNode;
@@ -25,6 +24,7 @@ interface LiquidCardProps {
 }
 
 export function LiquidCard({ children, onPress, onExpand, expanded = false, style }: LiquidCardProps) {
+  const { width, height } = useWindowDimensions();
   const scale = useSharedValue(1);
   const borderRadius = useSharedValue(16);
   const cardWidth = useSharedValue(width - 32);

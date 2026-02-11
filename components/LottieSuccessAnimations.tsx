@@ -1,6 +1,6 @@
 // Lottie Success Animations - Blooming Flower & Celebration
 import React, { useEffect, useRef } from 'react';
-import { View, StyleSheet, Modal, Dimensions } from 'react-native';
+import { View, StyleSheet, Modal } from 'react-native';
 import LottieView from 'lottie-react-native';
 import Animated, {
   useSharedValue,
@@ -12,8 +12,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { Platform } from 'react-native';
-
-const { width, height } = Dimensions.get('window');
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 
 interface LottieSuccessProps {
   visible: boolean;

@@ -8,7 +8,6 @@ import {
   Pressable,
   Switch,
   Platform,
-  Dimensions,
 } from 'react-native';
 import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import { useRouter } from 'expo-router';
@@ -20,6 +19,7 @@ import { BlurView } from 'expo-blur';
 // import { Canvas, Group, Circle, Path, Skia } from '@shopify/react-native-skia';
 import { useAuth } from '@/lib/auth';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
 import { EnhancedPaywallModal } from '@/components/EnhancedPaywallModal';
 import { AnchorChain } from '@/components/AnchorChain';
@@ -32,8 +32,6 @@ import { EnhancedNotificationService, HapticSignature } from '@/services/Enhance
 import type { Reminder } from '@/types/reminder';
 import { VisualGarden } from '@/components/VisualGarden';
 import { BentoGridLayout, BentoLayouts } from '@/components/BentoGridLayout';
-
-const { width } = Dimensions.get('window');
 
 interface ProgressRingProps {
   progress: number;
@@ -100,6 +98,7 @@ const AnimatedCircle = Animated.createAnimatedComponent(View);
 export default function MeScreen() {
   const theme = useTheme();
   const colorScheme = useColorScheme();
+  const { width } = useWindowDimensions();
   const insets = useSafeAreaInsets();
   const router = useRouter();
   const { user } = useAuth();

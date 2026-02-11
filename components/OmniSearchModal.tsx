@@ -23,10 +23,9 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { useTheme } from '@/hooks/useColorScheme';
+import { useWindowDimensions } from '@/hooks/useWindowDimensions';
 import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
 import type { Reminder, TagType } from '@/types/reminder';
-
-const { width: SCREEN_WIDTH } = Dimensions.get('window');
 
 interface SearchResult {
   type: 'task' | 'circle' | 'anchor' | 'template';
@@ -58,6 +57,7 @@ export function OmniSearchModal({
   templates = [],
 }: OmniSearchModalProps) {
   const theme = useTheme();
+  const { width: SCREEN_WIDTH } = useWindowDimensions();
   const [query, setQuery] = useState('');
   const [results, setResults] = useState<SearchResult[]>([]);
   const [isSearching, setIsSearching] = useState(false);
