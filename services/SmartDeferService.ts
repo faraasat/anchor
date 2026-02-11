@@ -1,5 +1,5 @@
 // Smart Defer Service - AI-powered task deferral analysis
-import { AI } from '@fastshot/ai';
+import { AI } from '@/lib/groq';
 import type { Reminder, DeferAnalysis, SmartDeferResult } from '@/types/reminder';
 import { ReminderService } from './ReminderService';
 

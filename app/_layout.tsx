@@ -3,7 +3,7 @@ import { useState, useEffect } from 'react';
 import { Stack } from 'expo-router';
 import { StatusBar } from 'expo-status-bar';
 import * as SplashScreen from 'expo-splash-screen';
-import { AuthProvider } from '@fastshot/auth';
+import { AuthProvider } from '@/lib/auth';
 import { useColorScheme } from '@/hooks/useColorScheme';
 import { AnimatedSplashScreen } from '@/components/AnimatedSplashScreen';
 import { HouseholdProvider } from '@/contexts/HouseholdContext';

@@ -17,7 +17,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeIn, FadeInDown, Layout } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useThemeEngine } from '@/contexts/ThemeEngineContext';
 import { Spacing, Typography } from '@/constants/theme';
 import { SocialPulse } from '@/components/SocialPulse';
@@ -563,8 +563,7 @@ const styles = StyleSheet.create({
   scrollView: {
     flex: 1,
   },
-  scrollContent: {
-    padding: Spacing.lg,
+  scrollContent: {    flexGrow: 1,    padding: Spacing.lg,
   },
   actionButtons: {
     flexDirection: 'row',

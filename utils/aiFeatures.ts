@@ -1,5 +1,5 @@
 // Advanced AI Features using Newell AI
-import { generateText } from '@fastshot/ai';
+import { generateText } from '@/lib/groq';
 import { Reminder, TagType } from '@/types/reminder';
 import { PreferencesStorage } from './storage';
 

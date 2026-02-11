@@ -20,7 +20,7 @@ import Animated, {
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useThemeEngine } from '@/contexts/ThemeEngineContext';
 import { Spacing, Typography } from '@/constants/theme';
 import { Reminder, ContextData, CalendarEvent } from '@/types/reminder';
@@ -960,6 +960,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
+    flexGrow: 1,
     paddingTop: Spacing.lg,
   },
   calendarSection: {

@@ -20,7 +20,7 @@ import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
 import { Reminder } from '@/types/reminder';
 import { SmartSnoozeService, SmartSnoozeOption } from '@/services/SmartSnoozeService';
 import { ProGateService, ProFeature } from '@/services/ProGateService';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 
 interface EnhancedSnoozeModalProps {
   visible: boolean;

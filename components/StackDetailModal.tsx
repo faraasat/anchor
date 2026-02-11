@@ -15,7 +15,7 @@ import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
 import Animated, { FadeIn, SlideInDown } from 'react-native-reanimated';
 import { useTheme } from '@/hooks/useColorScheme';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { Stack, StackImportResult } from '@/types/stack';
 import { StackService } from '@/services/StackService';
 import { Spacing, Typography, Shadows } from '@/constants/theme';

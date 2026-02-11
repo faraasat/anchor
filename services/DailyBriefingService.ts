@@ -1,6 +1,6 @@
 // Daily Briefing Service - AI-powered narrative summaries
 // Phase 2: Conversational intelligence using Newell AI
-import { generateText } from '@fastshot/ai';
+import { generateText } from '@/lib/groq';
 import type { Reminder } from '@/types/reminder';
 
 export interface WeatherData {

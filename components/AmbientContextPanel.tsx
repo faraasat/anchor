@@ -9,7 +9,7 @@ import * as Location from 'expo-location';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
 import { WeatherData } from '@/services/WeatherService';
 import { Spacing, Typography, Shadows } from '@/constants/theme';
-import { NewellAI } from '@fastshot/ai';
+import { NewellAI } from '@/lib/groq';
 
 interface AmbientContextPanelProps {
   weather: WeatherData | null;

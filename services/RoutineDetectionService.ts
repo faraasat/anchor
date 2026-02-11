@@ -1,6 +1,6 @@
 // Routine Detection Service - AI-powered pattern recognition
 // Phase 2: Detect task sequences and suggest Routine Stacks
-import { generateText } from '@fastshot/ai';
+import { generateText } from '@/lib/groq';
 import type { Reminder, TagType } from '@/types/reminder';
 
 export interface RoutinePattern {

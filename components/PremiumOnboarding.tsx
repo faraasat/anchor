@@ -26,7 +26,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { useTheme } from '@/hooks/useColorScheme';
 import { Spacing, BorderRadius, Typography } from '@/constants/theme';
 import { HapticPatternsService, HapticPattern } from '@/services/HapticPatternsService';
-import { NewellAI } from '@fastshot/ai';
+import { NewellAI } from '@/lib/groq';
 
 const { width, height } = Dimensions.get('window');
 

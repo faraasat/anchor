@@ -1,5 +1,5 @@
 // Procrastination Profiler - AI-powered analysis of user delays
-import { newell } from '@fastshot/ai';
+import { newell } from '@/lib/groq';
 import type { Reminder } from '@/types/reminder';
 import type { ProcrastinationProfile } from '@/types/phase8';
 

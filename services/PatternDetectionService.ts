@@ -1,5 +1,5 @@
 // Pattern Detection Service - Habit-based reminder suggestions
-import { newell } from '@fastshot/ai';
+import { newell } from '@/lib/groq';
 import type { Reminder, TagType } from '@/types/reminder';
 import type { PatternDetection } from '@/types/phase8';
 

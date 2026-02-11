@@ -16,7 +16,7 @@ import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useTheme } from '@/hooks/useColorScheme';
 import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
 

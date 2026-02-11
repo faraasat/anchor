@@ -1,6 +1,6 @@
-// AI Parser Service - Complex natural language parsing using Newell AI
+// AI Parser Service - Complex natural language parsing using Groq AI
 // Phase 2: Parse multi-faceted commands (task + location + circle + schedule)
-import { generateText } from '@fastshot/ai';
+import { generateText } from '@/lib/groq';
 import type { Reminder, TagType, LocationCategory, RecurrenceRule } from '@/types/reminder';
 
 export interface ParsedCommand {

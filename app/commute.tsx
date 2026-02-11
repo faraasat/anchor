@@ -16,7 +16,7 @@ import { useSafeAreaInsets } from 'react-native-safe-area-context';
 import Animated, { FadeIn } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import * as Speech from 'expo-speech';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useThemeEngine, getTimeGreeting } from '@/contexts/ThemeEngineContext';
 import { Spacing, Typography, BorderRadius } from '@/constants/theme';
 import { Reminder } from '@/types/reminder';

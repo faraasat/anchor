@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useTheme } from '@/hooks/useColorScheme';
 import { Spacing, Typography, BorderRadius, Shadows } from '@/constants/theme';
 import { PomodoroTimer } from '@/components/wellness/PomodoroTimer';

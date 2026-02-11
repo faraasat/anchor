@@ -1,5 +1,5 @@
 // Smart Snooze Service - AI-powered snooze suggestions using Newell AI
-import { AIService } from '@fastshot/ai';
+import { AIService } from '@/lib/groq';
 import { CalendarEvent, Reminder } from '@/types/reminder';
 import { CalendarIntegrationService } from './CalendarIntegrationService';
 

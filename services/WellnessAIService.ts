@@ -1,5 +1,5 @@
-// Wellness AI Service - Newell AI powered wellness insights
-import { generateText } from '@fastshot/ai';
+// Wellness AI Service - Groq AI powered wellness insights
+import { generateText } from '@/lib/groq';
 
 export interface WellnessData {
   steps?: number;

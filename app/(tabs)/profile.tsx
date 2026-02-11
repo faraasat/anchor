@@ -7,7 +7,7 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
 import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
 import { EnhancedPaywallModal } from '@/components/EnhancedPaywallModal';
@@ -448,6 +448,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
+    flexGrow: 1,
     padding: Spacing.lg,
     gap: Spacing.lg,
   },

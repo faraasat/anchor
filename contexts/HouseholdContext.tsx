@@ -1,6 +1,6 @@
 // Household Context - Manages family/group collaboration
 import React, { createContext, useContext, useState, useEffect, ReactNode } from 'react';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { supabase, subscribeToHousehold, subscribeToNudges } from '@/lib/supabase';
 import type { Database } from '@/types/database';
 import * as Haptics from 'expo-haptics';

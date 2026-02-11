@@ -16,7 +16,7 @@ import * as Haptics from 'expo-haptics';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/hooks/useColorScheme';
 import { Spacing } from '@/constants/theme';
-import { NewellAIClient } from '@fastshot/ai';
+import { NewellAIClient } from '@/lib/groq';
 
 const newellClient = new NewellAIClient({
   baseURL: process.env.EXPO_PUBLIC_NEWELL_API_URL,

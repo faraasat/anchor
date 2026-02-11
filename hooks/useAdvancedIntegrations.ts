@@ -1,7 +1,7 @@
 // Advanced Integrations Hook - Initialize all advanced features
 import { useEffect, useState, useCallback } from 'react';
 import { Alert, AppState, AppStateStatus } from 'react-native';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { getCalendarSyncService } from '@/lib/calendarSync';
 import { getHealthSyncService } from '@/lib/healthSync';
 import { getOfflineSyncManager } from '@/lib/offlineSync';

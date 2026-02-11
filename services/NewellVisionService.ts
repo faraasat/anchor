@@ -1,6 +1,6 @@
 // Phase 5: Newell AI Vision Service
 // Image analysis for smart scanning using newell-ai skill
-import { AI } from '@fastshot/ai';
+import { AI } from '@/lib/groq';
 
 export interface ScannedTask {
   title: string;

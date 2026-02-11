@@ -1,5 +1,5 @@
 // AI Insights Service - Smart suggestions and productivity analysis
-import { generateText } from '@fastshot/ai';
+import { generateText } from '@/lib/groq';
 import { ReminderService } from './ReminderService';
 import { WeatherService } from './WeatherService';
 import { HardwareTriggersService } from './HardwareTriggersService';

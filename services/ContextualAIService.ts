@@ -1,5 +1,5 @@
-// Contextual AI Service - Smart 'Near You' recommendations using Newell AI
-import { generateText } from '@fastshot/ai';
+// Contextual AI Service - Smart 'Near You' recommendations using Groq AI
+import { generateText } from '@/lib/groq';
 import type { Reminder, CalendarEvent } from '@/types/reminder';
 
 export interface ContextData {

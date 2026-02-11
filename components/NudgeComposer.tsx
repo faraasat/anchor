@@ -15,11 +15,11 @@ import { Ionicons } from '@expo/vector-icons';
 import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import * as Haptics from 'expo-haptics';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useTheme } from '@/hooks/useColorScheme';
 import { Spacing, Typography } from '@/constants/theme';
 import { supabase } from '@/lib/supabase';
-import { generateText } from '@fastshot/ai';
+import { generateText } from '@/lib/groq';
 import type { Reminder } from '@/types/reminder';
 
 interface NudgeComposerProps {

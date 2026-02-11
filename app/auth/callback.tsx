@@ -1,6 +1,5 @@
 // OAuth Callback Handler - Required for web authentication
-import { AuthCallbackPage } from '@fastshot/auth';
-import { supabase } from '@/lib/supabase';
+import { AuthCallbackPage } from '@/lib/auth';
 import { useRouter } from 'expo-router';
 
 export default function AuthCallback() {
@@ -8,7 +7,6 @@ export default function AuthCallback() {
 
   return (
     <AuthCallbackPage
-      supabaseClient={supabase}
       onSuccess={() => router.replace('/(tabs)')}
       onError={(error) => {
         console.error('Auth callback error:', error);

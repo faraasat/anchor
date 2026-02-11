@@ -17,7 +17,7 @@ import * as Haptics from 'expo-haptics';
 import Animated, { FadeIn, FadeInDown, SlideInDown } from 'react-native-reanimated';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
 import { Reminder } from '@/types/reminder';
-import { NewellAI } from '@fastshot/ai';
+import { NewellAI } from '@/lib/groq';
 import { Spacing, Typography, Shadows } from '@/constants/theme';
 
 const { width } = Dimensions.get('window');

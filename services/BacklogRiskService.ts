@@ -1,5 +1,5 @@
 // Backlog Risk Service - Health meter and overload detection
-import { newell } from '@fastshot/ai';
+import { newell } from '@/lib/groq';
 import type { Reminder } from '@/types/reminder';
 import type { BacklogRiskScore } from '@/types/phase8';
 

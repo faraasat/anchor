@@ -27,7 +27,7 @@ import { Audio } from 'expo-av';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
 import { Spacing, BorderRadius, Typography } from '@/constants/theme';
 import { HapticPatternsService, HapticPattern } from '@/services/HapticPatternsService';
-import { NewellAI } from '@fastshot/ai';
+import { NewellAI } from '@/lib/groq';
 
 const { width, height } = Dimensions.get('window');
 

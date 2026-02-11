@@ -2489,13 +2489,12 @@ __metadata:
   languageName: node
   linkType: hard
 
-"@react-native-community/netinfo@npm:^11.5.2":
-  version: 11.5.2
-  resolution: "@react-native-community/netinfo@npm:11.5.2"
+"@react-native-community/netinfo@npm:11.4.1":
+  version: 11.4.1
+  resolution: "@react-native-community/netinfo@npm:11.4.1"
   peerDependencies:
-    react: "*"
     react-native: ">=0.59"
-  checksum: 10c0/d5301d7d8b363753b6980f5d17dc47ad4933fc46e4010aceb937c0f673b35a6648f259df930b2b48d99344a90ff7a187344486100c4874462d88545f1647bef5
+  checksum: 10c0/118ba6d495bd14c2dab3d228a0c1857620a293ae8592d170d70eaf88a6ac6a4e35c7f84527975a9054e36891a9694aacc8ec053326b5f05961459ed08a70dd35
   languageName: node
   linkType: hard
 
@@ -3501,7 +3500,7 @@ __metadata:
     "@radix-ui/react-dialog": "npm:^1.1.15"
     "@react-native-async-storage/async-storage": "npm:^2.2.0"
     "@react-native-community/datetimepicker": "npm:8.4.4"
-    "@react-native-community/netinfo": "npm:^11.5.2"
+    "@react-native-community/netinfo": "npm:11.4.1"
     "@react-navigation/bottom-tabs": "npm:^7.3.10"
     "@react-navigation/elements": "npm:^2.3.8"
     "@react-navigation/native": "npm:^7.1.6"

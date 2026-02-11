@@ -18,7 +18,7 @@ import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 // import { Canvas, Group, Circle, Path, Skia } from '@shopify/react-native-skia';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
 import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
 import { EnhancedPaywallModal } from '@/components/EnhancedPaywallModal';
@@ -558,6 +558,7 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   scrollContent: {
+    flexGrow: 1,
     padding: Spacing.lg,
     gap: Spacing.lg,
   },

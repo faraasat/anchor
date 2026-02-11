@@ -17,7 +17,7 @@ import * as Haptics from 'expo-haptics';
 import { supabase } from '@/lib/supabase';
 import { useTheme } from '@/hooks/useColorScheme';
 import { Spacing } from '@/constants/theme';
-import { NewellAIClient } from '@fastshot/ai';
+import { NewellAIClient } from '@/lib/groq';
 import { LineChart } from 'react-native-svg';
 
 const newellClient = new NewellAIClient({

@@ -16,7 +16,7 @@ import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { useRouter } from 'expo-router';
-import { useAuth } from '@fastshot/auth';
+import { useAuth } from '@/lib/auth';
 import { useTheme } from '@/hooks/useColorScheme';
 import { useHousehold } from '@/contexts/HouseholdContext';
 import { usePrivacy } from '@/contexts/PrivacyContext';

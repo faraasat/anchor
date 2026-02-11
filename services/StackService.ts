@@ -2,7 +2,7 @@
 import { supabase } from '@/lib/supabase';
 import { Stack, StackTask, StackCategory, StackImportResult, ScheduleSuggestion } from '@/types/stack';
 import { Reminder } from '@/types/reminder';
-import { NewellAI } from '@fastshot/ai';
+import { NewellAI } from '@/lib/groq';
 
 export class StackService {
   /**
