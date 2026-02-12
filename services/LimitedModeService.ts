@@ -170,6 +170,7 @@ export class LimitedModeService {
 
   /**
    * Check if user has AI requests remaining
+   * Note: Use AIRequestTrackingService for persistent tracking
    */
   static async canMakeAIRequest(currentRequests: number): Promise<{
     allowed: boolean;
@@ -192,6 +193,11 @@ export class LimitedModeService {
 
     return { allowed: true, remaining };
   }
+
+  /**
+   * @deprecated Use AIRequestTrackingService.incrementRequestCount() instead
+   * This method is kept for backward compatibility
+   */
 
   /**
    * Get usage message for display
@@ -240,12 +246,15 @@ export class LimitedModeService {
   }
 
   /**
-   * Track AI request usage (should be persisted to storage)
+   * @deprecated Use AIRequestTrackingService instead
+   * These methods are kept for backward compatibility but will be removed in future versions.
+   * The new service provides persistent storage using AsyncStorage and database logging.
    */
   private static aiRequestCount = 0;
   private static aiRequestDate: string | null = null;
 
   static incrementAIRequestCount(): void {
+    console.warn('LimitedModeService.incrementAIRequestCount is deprecated. Use AIRequestTrackingService.incrementRequestCount()');
     const today = new Date().toISOString().split('T')[0];
 
     // Reset count if it's a new day
@@ -258,6 +267,7 @@ export class LimitedModeService {
   }
 
   static getAIRequestCount(): number {
+    console.warn('LimitedModeService.getAIRequestCount is deprecated. Use AIRequestTrackingService.getTodayRequestCount()');
     const today = new Date().toISOString().split('T')[0];
 
     // Reset count if it's a new day

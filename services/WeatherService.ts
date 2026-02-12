@@ -47,8 +47,41 @@ export class WeatherService {
         longitude = location.coords.longitude;
       }
 
-      // In production, use a weather API like OpenWeatherMap or WeatherAPI
-      // For now, return mock data
+      // Real OpenWeatherMap API integration
+      const API_KEY = process.env.EXPO_PUBLIC_OPENWEATHER_API_KEY;
+      
+      if (API_KEY) {
+        try {
+          const response = await fetch(
+            `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=imperial`
+          );
+          
+          if (response.ok) {
+            const data = await response.json();
+            const weather: WeatherData = {
+              temperature: Math.round(data.main.temp),
+              condition: data.weather[0].main,
+              description: data.weather[0].description,
+              icon: this.getWeatherIcon(data.weather[0].main),
+              humidity: data.main.humidity,
+              windSpeed: Math.round(data.wind.speed),
+              precipitation: (data.rain?.['1h'] || 0) * 100, // Convert to percentage
+              feelsLike: Math.round(data.main.feels_like),
+            };
+
+            this.cachedWeather = weather;
+            this.lastWeatherUpdate = now;
+
+            return weather;
+          }
+        } catch (apiError) {
+          console.error('Weather API error:', apiError);
+          // Fall through to mock data
+        }
+      }
+
+      // Fallback to mock data if API key not configured or API fails
+      console.log('Using mock weather data (configure EXPO_PUBLIC_OPENWEATHER_API_KEY for real data)');
       const weather: WeatherData = {
         temperature: 68,
         condition: 'Partly Cloudy',
@@ -59,23 +92,6 @@ export class WeatherService {
         precipitation: 20,
         feelsLike: 66,
       };
-
-      // Example API integration:
-      // const API_KEY = process.env.EXPO_PUBLIC_WEATHER_API_KEY;
-      // const response = await fetch(
-      //   `https://api.openweathermap.org/data/2.5/weather?lat=${latitude}&lon=${longitude}&appid=${API_KEY}&units=imperial`
-      // );
-      // const data = await response.json();
-      // const weather: WeatherData = {
-      //   temperature: Math.round(data.main.temp),
-      //   condition: data.weather[0].main,
-      //   description: data.weather[0].description,
-      //   icon: this.getWeatherIcon(data.weather[0].main),
-      //   humidity: data.main.humidity,
-      //   windSpeed: Math.round(data.wind.speed),
-      //   precipitation: data.rain?.['1h'] || 0,
-      //   feelsLike: Math.round(data.main.feels_like),
-      // };
 
       this.cachedWeather = weather;
       this.lastWeatherUpdate = now;

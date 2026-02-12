@@ -84,42 +84,53 @@ export function PaywallModal({ visible, onClose, onPurchaseComplete }: PaywallMo
 
     setIsLoading(true);
 
-    // Mock purchase for demonstration
-    setTimeout(() => {
+    try {
+      // Real RevenueCat purchase implementation
+      const pkg = selectedPackage === 'monthly' ? monthlyPackage : annualPackage;
+      const customerInfo = await purchasePackage(pkg as any);
+      
+      if (customerInfo?.entitlements.active['pro']) {
+        if (Platform.OS !== 'web') {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        }
+        onPurchaseComplete?.();
+        onClose();
+      } else {
+        // Purchase succeeded but no entitlement (shouldn't happen)
+        console.warn('Purchase completed but no pro entitlement found');
+      }
+    } catch (error: any) {
+      console.error('Purchase error:', error);
+      if (!error.userCancelled) {
+        // Show error to user (you might want to add Alert here)
+        console.error('Failed to complete purchase');
+      }
+    } finally {
       setIsLoading(false);
-      onPurchaseComplete?.();
-      onClose();
-    }, 1500);
-
-    /* Real implementation:
-    const pkg = selectedPackage === 'monthly' ? monthlyPackage : annualPackage;
-    const customerInfo = await purchasePackage(pkg);
-    setIsLoading(false);
-
-    if (customerInfo?.entitlements.active['pro']) {
-      onPurchaseComplete?.();
-      onClose();
     }
-    */
   };
 
   const handleRestore = async () => {
     setIsRestoring(true);
 
-    // Mock restore
-    setTimeout(() => {
+    try {
+      const customerInfo = await restorePurchases();
+      
+      if (customerInfo?.entitlements.active['pro']) {
+        if (Platform.OS !== 'web') {
+          Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+        }
+        onPurchaseComplete?.();
+        onClose();
+      } else {
+        // No active purchases found
+        console.log('No active purchases found to restore');
+      }
+    } catch (error) {
+      console.error('Restore error:', error);
+    } finally {
       setIsRestoring(false);
-    }, 1000);
-
-    /* Real implementation:
-    const customerInfo = await restorePurchases();
-    setIsRestoring(false);
-
-    if (customerInfo?.entitlements.active['pro']) {
-      onPurchaseComplete?.();
-      onClose();
     }
-    */
   };
 
   return (

@@ -460,6 +460,7 @@ console.log('Debug mode enabled');
 - **[Product Strategy & Monetization](./docs/product-strategy.md)** — Problem statement, target audience, and revenue model
 - **[Technical Architecture](./docs/technical-architecture.md)** — Tech stack, architecture, and RevenueCat implementation
 - **[Team & Background](./docs/team.md)** — About the founder, experience, and vision
+- **[Implementation Status](./docs/implementation-status.md)** ⭐ — What's actually built vs. planned (85% complete)
 - **[MIGRATION.md](./MIGRATION.md)** — Recent changes and breaking updates
 - **[PROJECT_STATUS.md](./PROJECT_STATUS.md)** — Current development state
 - **[docs/idea.md](./docs/idea.md)** — Original product concept
