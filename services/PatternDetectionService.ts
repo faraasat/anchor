@@ -277,10 +277,12 @@ Return JSON:
       const response = await newell.chat.ask({
         prompt,
         systemMessage:
-          'You are a habit formation expert. Create engaging, motivational reminder text.',
+          'You are a habit formation expert. Create engaging, motivational reminder text. Return ONLY valid JSON, no markdown or explanations.',
       });
 
-      const parsed = JSON.parse(response);
+      const { extractJSON } = await import('@/lib/groq');
+      const jsonStr = extractJSON(response);
+      const parsed = JSON.parse(jsonStr);
       return {
         ...pattern.suggestedReminder,
         title: parsed.title || pattern.suggestedReminder.title,

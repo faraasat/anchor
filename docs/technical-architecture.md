@@ -8,18 +8,18 @@ Anchor is built with a **modern, mobile-first architecture** emphasizing offline
 
 ```
 ┌─────────────────────────────────────────────────────────┐
-│                     Mobile Clients                       │
-│              (iOS, Android, Web via Expo)                │
-│  ┌───────────┐  ┌──────────┐  ┌────────────────────┐  │
-│  │  React    │  │ Reanimated│  │  Local Storage     │  │
-│  │  Native   │←→│     4     │  │  (AsyncStorage)    │  │
-│  │  0.81.5   │  │  (60fps)  │  │  Offline Queue     │  │
-│  └───────────┘  └──────────┘  └────────────────────┘  │
-│         ↓              ↓                   ↓             │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │         Optimistic UI Layer                       │  │
-│  │    (Instant feedback, background sync)            │  │
-│  └──────────────────────────────────────────────────┘  │
+│                     Mobile Clients                      │
+│              (iOS, Android, Web via Expo)               │
+│  ┌───────────┐  ┌──────────-┐  ┌────────────────────┐   │
+│  │  React    │  │ Reanimated│  │  Local Storage     │   │
+│  │  Native   │←→│     4     │  │  (AsyncStorage)    │   │
+│  │  0.81.5   │  │  (60fps)  │  │  Offline Queue     │   │ 
+│  └───────────┘  └──────────-┘  └────────────────────┘   │
+│         ↓              ↓                   ↓            │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │         Optimistic UI Layer                      │   │
+│  │    (Instant feedback, background sync)           │   │
+│  └──────────────────────────────────────────────────┘   │
 └─────────────────────┬───────────────────────────────────┘
                       ↓
          ┌────────────────────────────┐
@@ -27,20 +27,20 @@ Anchor is built with a **modern, mobile-first architecture** emphasizing offline
          └────────────┬───────────────┘
                       ↓
 ┌─────────────────────────────────────────────────────────┐
-│                    Backend Services                      │
-│  ┌───────────┐  ┌──────────┐  ┌────────────────────┐  │
-│  │ Supabase  │  │  Groq AI │  │    RevenueCat      │  │
-│  │ PostgreSQL│  │  LLM API │  │  Subscriptions     │  │
-│  │ Real-time │  │          │  │                    │  │
-│  │   Auth    │  │          │  │                    │  │
-│  └───────────┘  └──────────┘  └────────────────────┘  │
-│                                                          │
-│  ┌──────────────────────────────────────────────────┐  │
-│  │         Edge Functions (Serverless)               │  │
-│  │  - AI prompt orchestration                        │  │
-│  │  - Webhook handlers (RevenueCat → Supabase)      │  │
-│  │  - Background jobs (overdue reminders)           │  │
-│  └──────────────────────────────────────────────────┘  │
+│                    Backend Services                     │
+│  ┌───────────┐  ┌──────────┐  ┌────────────────────┐    │
+│  │ Supabase  │  │  Groq AI │  │    RevenueCat      │    │
+│  │ PostgreSQL│  │  LLM API │  │  Subscriptions     │    │
+│  │ Real-time │  │          │  │                    │    │
+│  │   Auth    │  │          │  │                    │    │
+│  └───────────┘  └──────────┘  └────────────────────┘    │
+│                                                         │
+│  ┌──────────────────────────────────────────────────┐   │
+│  │         Edge Functions (Serverless)              │   │
+│  │  - AI prompt orchestration                       │   │
+│  │  - Webhook handlers (RevenueCat → Supabase)      │   │
+│  │  - Background jobs (overdue reminders)           │   │
+│  └──────────────────────────────────────────────────┘   │
 └─────────────────────────────────────────────────────────┘
 ```
 

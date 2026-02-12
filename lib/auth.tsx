@@ -93,9 +93,21 @@ export function AuthProvider({
       const { error, data } = await supabase.auth.signUp({
         email,
         password,
-        options,
+        options: {
+          ...options,
+          // Optional: Skip email confirmation for development
+          // Remove this in production or configure email templates in Supabase
+          emailRedirectTo: undefined,
+        },
       });
       if (error) throw error;
+
+      console.log('Sign up response:', {
+        user: data.user?.email,
+        session: !!data.session,
+        confirmationSent: data.user?.confirmation_sent_at,
+        emailConfirmed: data.user?.email_confirmed_at,
+      });
 
       // Check if email confirmation is required
       const emailConfirmationRequired = !data.session;

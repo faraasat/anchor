@@ -107,7 +107,16 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
         .select('*')
         .eq('owner_id', user.id);
 
-      if (ownedError) throw ownedError;
+      if (ownedError) {
+        // If table doesn't exist, log and continue with empty array
+        if (ownedError.code === '42P01') {
+          console.warn('Households table not found. Run database migrations.');
+          setHouseholds([]);
+          setIsLoading(false);
+          return;
+        }
+        throw ownedError;
+      }
 
       // Get households where user is member
       const { data: memberHouseholds, error: memberError } = await supabase
@@ -115,7 +124,16 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
         .select('household_id, households(*)')
         .eq('user_id', user.id);
 
-      if (memberError) throw memberError;
+      if (memberError) {
+        // If table doesn't exist, log and continue with owned households only
+        if (memberError.code === '42P01') {
+          console.warn('Household members table not found. Run database migrations.');
+          setHouseholds(ownedHouseholds || []);
+          setIsLoading(false);
+          return;
+        }
+        throw memberError;
+      }
 
       const allHouseholds = [
         ...(ownedHouseholds || []),
@@ -130,6 +148,7 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
       }
     } catch (error) {
       console.error('Error loading households:', error);
+      setHouseholds([]);
     } finally {
       setIsLoading(false);
     }
@@ -163,18 +182,26 @@ export function HouseholdProvider({ children }: { children: ReactNode }) {
         .from('nudges')
         .select(`
           *,
-          sender:profiles!sender_id(full_name, email),
-          reminder:reminders(title)
+          sender:profiles!sender_id(full_name, email)
         `)
         .eq('recipient_id', user.id)
         .is('read_at', null)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        // If table doesn't exist, log and continue
+        if (error.code === '42P01') {
+          console.warn('Nudges table not found. Run database migrations.');
+          setUnreadNudges([]);
+          return;
+        }
+        throw error;
+      }
 
       setUnreadNudges(data || []);
     } catch (error) {
       console.error('Error loading nudges:', error);
+      setUnreadNudges([]);
     }
   };
 

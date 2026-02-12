@@ -127,10 +127,20 @@ export const AI = {
 
 export const newell = {
   generate: generateText,
+  chat: {
+    ask: async ({ prompt, systemMessage }: { prompt: string; systemMessage?: string }) => {
+      return generateText({ prompt, systemPrompt: systemMessage });
+    },
+  },
 };
 
 export const NewellAI = {
   generate: generateText,
+  chat: {
+    ask: async ({ prompt, systemMessage }: { prompt: string; systemMessage?: string }) => {
+      return generateText({ prompt, systemPrompt: systemMessage });
+    },
+  },
 };
 
 export const NewellAIClient = {
@@ -140,5 +150,30 @@ export const NewellAIClient = {
 export const AIService = {
   generate: generateText,
 };
+
+/**
+ * Extract JSON from LLM response that may contain markdown or prose
+ */
+export function extractJSON(response: string): string {
+  // Try to find JSON in markdown code blocks
+  const codeBlockMatch = response.match(/```(?:json)?\s*([\s\S]*?)```/);
+  if (codeBlockMatch) {
+    return codeBlockMatch[1].trim();
+  }
+
+  // Try to find JSON array or object
+  const jsonArrayMatch = response.match(/\[\s*\{[\s\S]*?\}\s*\]/);
+  if (jsonArrayMatch) {
+    return jsonArrayMatch[0];
+  }
+
+  const jsonObjectMatch = response.match(/\{[\s\S]*?\}/);
+  if (jsonObjectMatch) {
+    return jsonObjectMatch[0];
+  }
+
+  // Return as-is and let caller handle parse error
+  return response;
+}
 
 export { generateText as default };

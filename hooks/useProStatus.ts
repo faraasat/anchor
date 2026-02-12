@@ -7,15 +7,33 @@ export function useProStatus() {
   const [isLoading, setIsLoading] = useState(true);
 
   useEffect(() => {
-    checkProStatus();
-    initRevenueCat();
+    initializeAndCheck();
   }, []);
+
+  const initializeAndCheck = async () => {
+    try {
+      await initRevenueCat();
+      // Small delay to ensure initialization completes
+      await new Promise(resolve => setTimeout(resolve, 100));
+      await checkProStatus();
+    } catch (error) {
+      console.warn('RevenueCat initialization failed:', error);
+      setIsLoading(false);
+      setIsPro(false);
+    }
+  };
 
   const checkProStatus = async () => {
     setIsLoading(true);
-    const proStatus = await isProUser();
-    setIsPro(proStatus);
-    setIsLoading(false);
+    try {
+      const proStatus = await isProUser();
+      setIsPro(proStatus);
+    } catch (error) {
+      console.warn('Error checking pro status:', error);
+      setIsPro(false);
+    } finally {
+      setIsLoading(false);
+    }
   };
 
   const refreshProStatus = () => {

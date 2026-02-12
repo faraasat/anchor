@@ -1,6 +1,6 @@
 // Pro Gate Service - Manages access to Pro features
-import Purchases from 'react-native-purchases';
 import { Alert } from 'react-native';
+import { isProUser } from '@/utils/revenueCat';
 
 export enum ProFeature {
   TRUE_SYNC = 'true_sync',
@@ -29,8 +29,7 @@ export class ProGateService {
    */
   static async isPro(): Promise<boolean> {
     try {
-      const customerInfo = await Purchases.getCustomerInfo();
-      return Boolean(customerInfo.entitlements.active['pro']);
+      return await isProUser();
     } catch (error) {
       console.error('Error checking Pro status:', error);
       return false;

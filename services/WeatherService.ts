@@ -40,11 +40,23 @@ export class WeatherService {
 
       // Get location if not provided
       if (!latitude || !longitude) {
-        const location = await Location.getCurrentPositionAsync({
-          accuracy: Location.Accuracy.Low,
-        });
-        latitude = location.coords.latitude;
-        longitude = location.coords.longitude;
+        try {
+          // Request location permission first
+          const { status } = await Location.requestForegroundPermissionsAsync();
+          if (status !== 'granted') {
+            console.log('Location permission not granted, using mock weather');
+            return this.getMockWeather();
+          }
+
+          const location = await Location.getCurrentPositionAsync({
+            accuracy: Location.Accuracy.Low,
+          });
+          latitude = location.coords.latitude;
+          longitude = location.coords.longitude;
+        } catch (locationError) {
+          console.log('Location error, using mock weather:', locationError);
+          return this.getMockWeather();
+        }
       }
 
       // Real OpenWeatherMap API integration
@@ -81,22 +93,7 @@ export class WeatherService {
       }
 
       // Fallback to mock data if API key not configured or API fails
-      console.log('Using mock weather data (configure EXPO_PUBLIC_OPENWEATHER_API_KEY for real data)');
-      const weather: WeatherData = {
-        temperature: 68,
-        condition: 'Partly Cloudy',
-        description: 'Partly cloudy with a chance of rain later',
-        icon: '⛅',
-        humidity: 65,
-        windSpeed: 12,
-        precipitation: 20,
-        feelsLike: 66,
-      };
-
-      this.cachedWeather = weather;
-      this.lastWeatherUpdate = now;
-
-      return weather;
+      return this.getMockWeather();
     } catch (error) {
       console.error('Error fetching weather:', error);
       return null;
@@ -118,7 +115,27 @@ export class WeatherService {
     return iconMap[condition] || '⛅';
   }
 
-  // Check if weather is suitable for outdoor activity
+  // Checmock weather data
+  private static getMockWeather(): WeatherData {
+    console.log('Using mock weather data (configure EXPO_PUBLIC_OPENWEATHER_API_KEY for real data)');
+    const weather: WeatherData = {
+      temperature: 68,
+      condition: 'Partly Cloudy',
+      description: 'Partly cloudy with a chance of rain later',
+      icon: '⛅',
+      humidity: 65,
+      windSpeed: 12,
+      precipitation: 20,
+      feelsLike: 66,
+    };
+
+    this.cachedWeather = weather;
+    this.lastWeatherUpdate = Date.now();
+
+    return weather;
+  }
+
+  // Get k if weather is suitable for outdoor activity
   static async isGoodWeatherForActivity(activityType: 'outdoor' | 'walking' | 'cycling' | 'running'): Promise<{
     suitable: boolean;
     reason?: string;
@@ -210,6 +227,13 @@ export class WeatherService {
   // Get commute time to work (saved location)
   static async getCommuteTime(workLocation: { latitude: number; longitude: number }): Promise<string | null> {
     try {
+      // Request location permission
+      const { status } = await Location.requestForegroundPermissionsAsync();
+      if (status !== 'granted') {
+        console.log('Location permission not granted');
+        return null;
+      }
+
       const currentLocation = await Location.getCurrentPositionAsync({
         accuracy: Location.Accuracy.Low,
       });
@@ -269,37 +293,49 @@ export class WeatherService {
 
     // Check traffic if has location
     if (reminder.locationTrigger) {
-      const currentLocation = await Location.getCurrentPositionAsync({
-        accuracy: Location.Accuracy.Low,
-      });
-
-      const traffic = await this.getTrafficDuration(
-        {
-          latitude: currentLocation.coords.latitude,
-          longitude: currentLocation.coords.longitude,
-        },
-        {
-          latitude: reminder.locationTrigger.latitude,
-          longitude: reminder.locationTrigger.longitude,
+      try {
+        // Request location permission
+        const { status } = await Location.requestForegroundPermissionsAsync();
+        if (status !== 'granted') {
+          console.log('Location permission not granted for traffic check');
+          return { shouldAdjust: false };
         }
-      );
 
-      if (traffic && traffic.durationInTraffic !== traffic.duration) {
-        const [currentHours, currentMinutes] = reminder.dueTime.split(':').map(Number);
-        const trafficMinutes = parseInt(traffic.durationInTraffic.replace(/\D/g, ''));
-        const normalMinutes = parseInt(traffic.duration.replace(/\D/g, ''));
-        const extraTime = trafficMinutes - normalMinutes;
+        const currentLocation = await Location.getCurrentPositionAsync({
+          accuracy: Location.Accuracy.Low,
+        });
 
-        if (extraTime > 5) {
-          const adjustedMinutes = currentMinutes - extraTime;
-          const adjustedTime = `${currentHours.toString().padStart(2, '0')}:${Math.max(0, adjustedMinutes).toString().padStart(2, '0')}`;
+        const traffic = await this.getTrafficDuration(
+          {
+            latitude: currentLocation.coords.latitude,
+            longitude: currentLocation.coords.longitude,
+          },
+          {
+            latitude: reminder.locationTrigger.latitude,
+            longitude: reminder.locationTrigger.longitude,
+          }
+        );
 
-          return {
-            shouldAdjust: true,
-            suggestion: `Heavy traffic detected (+${extraTime} min). Leave earlier to arrive on time.`,
-            newTime: adjustedTime,
-          };
+        if (traffic && traffic.durationInTraffic !== traffic.duration) {
+          const [currentHours, currentMinutes] = reminder.dueTime.split(':').map(Number);
+          const trafficMinutes = parseInt(traffic.durationInTraffic.replace(/\D/g, ''));
+          const normalMinutes = parseInt(traffic.duration.replace(/\D/g, ''));
+          const extraTime = trafficMinutes - normalMinutes;
+
+          if (extraTime > 5) {
+            const adjustedMinutes = currentMinutes - extraTime;
+            const adjustedTime = `${currentHours.toString().padStart(2, '0')}:${Math.max(0, adjustedMinutes).toString().padStart(2, '0')}`;
+
+            return {
+              shouldAdjust: true,
+              suggestion: `Heavy traffic detected (+${extraTime} min). Leave earlier to arrive on time.`,
+              newTime: adjustedTime,
+            };
+          }
         }
+      } catch (locationError) {
+        console.log('Error checking traffic:', locationError);
+        // Continue without traffic adjustment
       }
     }
 

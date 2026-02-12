@@ -17,6 +17,7 @@ import Animated, {
   useSharedValue,
   useAnimatedScrollHandler,
   FadeIn,
+  runOnJS,
 } from 'react-native-reanimated';
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -105,6 +106,11 @@ export default function TodayScreen() {
 
   // Phase 2: Haptic scrolling
   const hapticManager = React.useRef(new HapticScrollManager({ itemHeight: 100, threshold: 50 })).current;
+
+  // Wrapper for haptic scroll handler that can be called from UI thread
+  const handleHapticScroll = useCallback((scrollPosition: number) => {
+    hapticManager.handleScroll(scrollPosition);
+  }, []); // hapticManager is stable from .current, no need in deps
 
   // Anchor triggers for environmental awareness
   const { lastTrigger, clearLastTrigger } = useAnchorTriggers(user?.id || null);
@@ -291,9 +297,11 @@ export default function TodayScreen() {
 
   const scrollHandler = useAnimatedScrollHandler({
     onScroll: (event) => {
+      'worklet';
       scrollY.value = event.contentOffset.y;
-      // Phase 2: Haptic feedback on scroll
-      hapticManager.handleScroll(event.contentOffset.y);
+      // Phase 2: Haptic feedback on scroll - commented out for debugging
+      // Uncomment below line once crash is resolved
+      // runOnJS(handleHapticScroll)(event.contentOffset.y);
     },
   });
 
@@ -707,6 +715,9 @@ export default function TodayScreen() {
           />
         }
         showsVerticalScrollIndicator={false}
+        removeClippedSubviews={Platform.OS === 'android'}
+        maxToRenderPerBatch={10}
+        windowSize={10}
       >
         {/* Smart Defer Button */}
         {showSmartDefer && user && (
@@ -762,20 +773,20 @@ export default function TodayScreen() {
 
         {/* Timeline */}
         <View style={styles.timeline}>
-          {sortedReminders.map((reminder, index) => (
-            <ReminderCard
-              key={reminder.id}
-              reminder={reminder}
-              onComplete={handleComplete}
-              onPress={handleReminderPress}
-              onSnooze={handleSnooze}
-              showTimeline
-              isFirst={index === 0}
-              isLast={index === sortedReminders.length - 1}
-            />
-          ))}
-
-          {sortedReminders.length === 0 && (
+          {sortedReminders?.length > 0 ? (
+            sortedReminders.map((reminder, index) => (
+              <ReminderCard
+                key={reminder.id}
+                reminder={reminder}
+                onComplete={handleComplete}
+                onPress={handleReminderPress}
+                onSnooze={handleSnooze}
+                showTimeline
+                isFirst={index === 0}
+                isLast={index === sortedReminders.length - 1}
+              />
+            ))
+          ) : (
             <View style={styles.emptyState}>
               <Ionicons name="calendar-outline" size={48} color={theme.textMuted} />
               <Text style={[styles.emptyTitle, { color: theme.text }]}>No reminders today</Text>

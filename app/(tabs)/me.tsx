@@ -16,6 +16,7 @@ import Animated, { FadeIn, FadeInDown, useSharedValue, useAnimatedStyle, withSpr
 import * as Haptics from 'expo-haptics';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
+import Svg, { Circle } from 'react-native-svg';
 // import { Canvas, Group, Circle, Path, Skia } from '@shopify/react-native-skia';
 import { useAuth } from '@/lib/auth';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
@@ -60,9 +61,9 @@ function ProgressRing({ progress, size, strokeWidth, color, label, value, subtit
 
   return (
     <View style={[styles.progressRing, { width: size, height: size }]}>
-      <svg width={size} height={size}>
+      <Svg width={size} height={size}>
         {/* Background Circle */}
-        <circle
+        <Circle
           cx={size / 2}
           cy={size / 2}
           r={radius}
@@ -83,7 +84,7 @@ function ProgressRing({ progress, size, strokeWidth, color, label, value, subtit
           style={animatedStyle}
           transform={`rotate(-90 ${size / 2} ${size / 2})`}
         /> */}
-      </svg>
+      </Svg>
       <View style={styles.progressRingContent}>
         <Text style={[styles.progressRingValue, { color }]}>{value}</Text>
         <Text style={[styles.progressRingLabel, { color: theme.textMuted }]}>{label}</Text>
@@ -307,8 +308,8 @@ export default function MeScreen() {
                 {/* Water Tracker */}
                 <Pressable onPress={() => handleAddWater(1)} style={styles.progressItem}>
                   <View style={[styles.progressRingWrapper, { borderColor: theme.border }]}>
-                    <svg width={110} height={110} style={styles.progressSvg}>
-                      <circle
+                    <Svg width={110} height={110} style={styles.progressSvg}>
+                      <Circle
                         cx={55}
                         cy={55}
                         r={48}
@@ -316,7 +317,7 @@ export default function MeScreen() {
                         strokeWidth={8}
                         fill="none"
                       />
-                      <circle
+                      <Circle
                         cx={55}
                         cy={55}
                         r={48}
@@ -328,7 +329,7 @@ export default function MeScreen() {
                         strokeDashoffset={301.59 * (1 - waterProgress / 100)}
                         transform={`rotate(-90 55 55)`}
                       />
-                    </svg>
+                    </Svg>
                     <View style={styles.progressRingInner}>
                       <Text style={[styles.progressValue, { color: theme.info }]}>
                         {waterData?.glassesConsumed || 0}/{waterData?.glassesGoal || 8}
@@ -342,8 +343,8 @@ export default function MeScreen() {
                 {/* Pedometer */}
                 <Pressable style={styles.progressItem}>
                   <View style={[styles.progressRingWrapper, { borderColor: theme.border }]}>
-                    <svg width={110} height={110} style={styles.progressSvg}>
-                      <circle
+                    <Svg width={110} height={110} style={styles.progressSvg}>
+                      <Circle
                         cx={55}
                         cy={55}
                         r={48}
@@ -351,7 +352,7 @@ export default function MeScreen() {
                         strokeWidth={8}
                         fill="none"
                       />
-                      <circle
+                      <Circle
                         cx={55}
                         cy={55}
                         r={48}
@@ -363,7 +364,7 @@ export default function MeScreen() {
                         strokeDashoffset={301.59 * (1 - stepProgress / 100)}
                         transform={`rotate(-90 55 55)`}
                       />
-                    </svg>
+                    </Svg>
                     <View style={styles.progressRingInner}>
                       <Text style={[styles.progressValue, { color: theme.success }]}>
                         {(todaySteps / 1000).toFixed(1)}k

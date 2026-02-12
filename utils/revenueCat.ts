@@ -1,8 +1,29 @@
 // RevenueCat Integration for Anchor Pro
 import Purchases, { PurchasesOffering, PurchasesPackage, CustomerInfo } from 'react-native-purchases';
-import { Platform } from 'react-native';
 
 const API_KEY = process.env.EXPO_PUBLIC_REVENUECAT_API_KEY || '';
+let isConfigured = false;
+
+const ensureRevenueCatConfigured = async (): Promise<boolean> => {
+  if (isConfigured) {
+    return true;
+  }
+
+  if (!API_KEY) {
+    console.warn('RevenueCat API key not configured');
+    return false;
+  }
+
+  try {
+    await Purchases.configure({ apiKey: API_KEY });
+    isConfigured = true;
+    console.log('RevenueCat initialized');
+    return true;
+  } catch (error) {
+    console.error('RevenueCat initialization error:', error);
+    return false;
+  }
+};
 
 export interface ProFeatures {
   crossPlatformSync: boolean;
@@ -13,20 +34,15 @@ export interface ProFeatures {
 }
 
 export const initRevenueCat = async (): Promise<void> => {
-  if (!API_KEY) {
-    console.warn('RevenueCat API key not configured');
-    return;
-  }
-
-  try {
-    await Purchases.configure({ apiKey: API_KEY });
-    console.log('RevenueCat initialized');
-  } catch (error) {
-    console.error('RevenueCat initialization error:', error);
-  }
+  await ensureRevenueCatConfigured();
 };
 
 export const getOfferings = async (): Promise<PurchasesOffering | null> => {
+  const configured = await ensureRevenueCatConfigured();
+  if (!configured) {
+    return null;
+  }
+
   try {
     const offerings = await Purchases.getOfferings();
     return offerings.current;
@@ -37,6 +53,11 @@ export const getOfferings = async (): Promise<PurchasesOffering | null> => {
 };
 
 export const purchasePackage = async (pkg: PurchasesPackage): Promise<CustomerInfo | null> => {
+  const configured = await ensureRevenueCatConfigured();
+  if (!configured) {
+    return null;
+  }
+
   try {
     const { customerInfo } = await Purchases.purchasePackage(pkg);
     return customerInfo;
@@ -49,6 +70,11 @@ export const purchasePackage = async (pkg: PurchasesPackage): Promise<CustomerIn
 };
 
 export const restorePurchases = async (): Promise<CustomerInfo | null> => {
+  const configured = await ensureRevenueCatConfigured();
+  if (!configured) {
+    return null;
+  }
+
   try {
     const customerInfo = await Purchases.restorePurchases();
     return customerInfo;
@@ -59,6 +85,11 @@ export const restorePurchases = async (): Promise<CustomerInfo | null> => {
 };
 
 export const getCustomerInfo = async (): Promise<CustomerInfo | null> => {
+  const configured = await ensureRevenueCatConfigured();
+  if (!configured) {
+    return null;
+  }
+
   try {
     const customerInfo = await Purchases.getCustomerInfo();
     return customerInfo;
@@ -69,6 +100,11 @@ export const getCustomerInfo = async (): Promise<CustomerInfo | null> => {
 };
 
 export const isProUser = async (): Promise<boolean> => {
+  const configured = await ensureRevenueCatConfigured();
+  if (!configured) {
+    return false;
+  }
+
   try {
     const customerInfo = await getCustomerInfo();
     if (!customerInfo) return false;
@@ -81,6 +117,11 @@ export const isProUser = async (): Promise<boolean> => {
 };
 
 export const loginUser = async (userId: string): Promise<void> => {
+  const configured = await ensureRevenueCatConfigured();
+  if (!configured) {
+    return;
+  }
+
   try {
     await Purchases.logIn(userId);
   } catch (error) {
@@ -89,6 +130,11 @@ export const loginUser = async (userId: string): Promise<void> => {
 };
 
 export const logoutUser = async (): Promise<void> => {
+  const configured = await ensureRevenueCatConfigured();
+  if (!configured) {
+    return;
+  }
+
   try {
     await Purchases.logOut();
   } catch (error) {

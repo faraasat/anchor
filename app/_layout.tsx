@@ -12,6 +12,7 @@ import { ThemeEngineProvider } from '@/contexts/ThemeEngineContext';
 import { OnboardingProvider } from '@/contexts/OnboardingContext';
 import { AccessibilityProvider } from '@/contexts/AccessibilityContext';
 import { supabase } from '@/lib/supabase';
+import { initRevenueCat } from '@/utils/revenueCat';
 
 // Keep splash screen visible while we load
 SplashScreen.preventAutoHideAsync();
@@ -25,6 +26,7 @@ export default function RootLayout() {
     async function prepare() {
       try {
         // Perform any app initialization here
+        await initRevenueCat();
         await new Promise(resolve => setTimeout(resolve, 100));
       } catch (e) {
         console.warn(e);

@@ -91,7 +91,15 @@ export class AnchorPointsService {
         .eq('user_id', userId)
         .order('created_at', { ascending: false });
 
-      if (error) throw error;
+      if (error) {
+        // If table doesn't exist, use local storage only
+        if (error.code === '42P01') {
+          console.warn('Anchor points table not found. Using local storage only.');
+          const stored = await AsyncStorage.getItem(`${STORAGE_KEY}_${userId}`);
+          return stored ? JSON.parse(stored) : [];
+        }
+        throw error;
+      }
 
       if (data && data.length > 0) {
         return data.map((item: any) => this.deserializeAnchorPoint(item));
@@ -103,8 +111,13 @@ export class AnchorPointsService {
     } catch (error) {
       console.error('Error getting anchor points:', error);
       // Fallback to local storage
-      const stored = await AsyncStorage.getItem(`${STORAGE_KEY}_${userId}`);
-      return stored ? JSON.parse(stored) : [];
+      try {
+        const stored = await AsyncStorage.getItem(`${STORAGE_KEY}_${userId}`);
+        return stored ? JSON.parse(stored) : [];
+      } catch (storageError) {
+        console.error('AsyncStorage error:', storageError);
+        return [];
+      }
     }
   }
 
@@ -117,34 +130,29 @@ export class AnchorPointsService {
       triggerCount: 0,
     };
 
+    // Always save to local storage
+    const points = await this.getAll(userId);
+    points.unshift(newPoint);
+    await AsyncStorage.setItem(`${STORAGE_KEY}_${userId}`, JSON.stringify(points));
+
     try {
-      // Save to database
+      // Try to save to database (best effort)
       const { error } = await supabase
         .from(DB_TABLE)
         .insert([this.serializeAnchorPoint(newPoint, userId)]);
 
-      if (error) throw error;
-
-      // Also save to local storage as backup
-      const points = await this.getAll(userId);
-      points.unshift(newPoint);
-      await AsyncStorage.setItem(`${STORAGE_KEY}_${userId}`, JSON.stringify(points));
-
-      if (Platform.OS !== 'web') {
-        Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+      if (error && error.code !== '42P01') {
+        console.warn('Failed to save anchor to database:', error);
       }
-
-      return newPoint;
     } catch (error) {
-      console.error('Error creating anchor point:', error);
-
-      // Fallback to local storage only
-      const points = await this.getAll(userId);
-      points.unshift(newPoint);
-      await AsyncStorage.setItem(`${STORAGE_KEY}_${userId}`, JSON.stringify(points));
-
-      return newPoint;
+      console.warn('Database not available, using local storage only:', error);
     }
+
+    if (Platform.OS !== 'web') {
+      Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
+    }
+
+    return newPoint;
   }
 
   // Update anchor point

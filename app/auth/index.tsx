@@ -1,5 +1,5 @@
 // Authentication Screen - Premium Email/Password with Real Auth
-import React, { useState } from 'react';
+import React, { useState } from "react";
 import {
   View,
   Text,
@@ -10,39 +10,60 @@ import {
   Platform,
   ActivityIndicator,
   Alert,
-} from 'react-native';
-import { useSafeAreaInsets } from 'react-native-safe-area-context';
-import { Ionicons } from '@expo/vector-icons';
-import { LinearGradient } from 'expo-linear-gradient';
-import Animated, { FadeIn, FadeInDown } from 'react-native-reanimated';
-import * as Haptics from 'expo-haptics';
-import { useAuth } from '@/lib/auth';
-import { useTheme } from '@/hooks/useColorScheme';
-import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
+} from "react-native";
+import { useSafeAreaInsets } from "react-native-safe-area-context";
+import { Ionicons } from "@expo/vector-icons";
+import { LinearGradient } from "expo-linear-gradient";
+import Animated, { FadeIn, FadeInDown } from "react-native-reanimated";
+import * as Haptics from "expo-haptics";
+import { useAuth } from "@/lib/auth";
+import { supabase } from "@/lib/supabase";
+import { useTheme } from "@/hooks/useColorScheme";
+import { Spacing, BorderRadius, Typography, Shadows } from "@/constants/theme";
 
 export default function AuthScreen() {
   const theme = useTheme();
   const insets = useSafeAreaInsets();
-  const { signInWithEmail, signUpWithEmail, isLoading, error, clearError } = useAuth();
+  const { signInWithEmail, signUpWithEmail, isLoading, error, clearError } =
+    useAuth();
 
-  const [email, setEmail] = useState('');
-  const [password, setPassword] = useState('');
-  const [fullName, setFullName] = useState('');
+  const [email, setEmail] = useState("");
+  const [password, setPassword] = useState("");
+  const [fullName, setFullName] = useState("");
   const [showPassword, setShowPassword] = useState(false);
   const [isSignUp, setIsSignUp] = useState(false);
 
+  const handleResendConfirmation = async (email: string) => {
+    try {
+      const { error } = await supabase.auth.resend({
+        type: "signup",
+        email: email,
+      });
+      if (error) throw error;
+      Alert.alert(
+        "Email Sent",
+        "Please check your inbox for the verification link.",
+      );
+    } catch (err: any) {
+      Alert.alert(
+        "Error",
+        err.message || "Failed to resend confirmation email",
+      );
+    }
+  };
+
   const handleAuth = async () => {
     if (!email || !password) {
-      Alert.alert('Error', 'Please fill in all fields');
+      Alert.alert("Error", "Please fill in all fields");
       return;
     }
 
     if (isSignUp && !fullName) {
-      Alert.alert('Error', 'Please enter your name');
+      Alert.alert("Error", "Please enter your name");
       return;
     }
 
-    if (Platform.OS !== 'web') {
+    if (Platform.OS !== "web") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
     }
 
@@ -53,9 +74,20 @@ export default function AuthScreen() {
         });
         if (result.emailConfirmationRequired) {
           Alert.alert(
-            'Verify Email',
-            `A verification link has been sent to ${result.email}. Please check your inbox.`,
-            [{ text: 'OK', onPress: () => setIsSignUp(false) }]
+            "Check Your Email",
+            `We've sent a verification link to ${result.email}.\n\n` +
+              `Please check your inbox (and spam folder) to verify your account.\n\n` +
+              `⚠️ If you're not receiving emails:\n` +
+              `• Check your Supabase email settings\n` +
+              `• Verify email provider is configured\n` +
+              `• For development, you can disable email confirmation in Supabase settings`,
+            [
+              {
+                text: "Resend Email",
+                onPress: () => handleResendConfirmation(result.email),
+              },
+              { text: "OK", onPress: () => setIsSignUp(false) },
+            ],
           );
         }
       } else {
@@ -63,22 +95,22 @@ export default function AuthScreen() {
         // Navigation handled automatically by AuthProvider
       }
 
-      if (Platform.OS !== 'web') {
+      if (Platform.OS !== "web") {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
       }
     } catch (err: any) {
-      console.error('Auth error:', err);
-      if (Platform.OS !== 'web') {
+      console.error("Auth error:", err);
+      if (Platform.OS !== "web") {
         Haptics.notificationAsync(Haptics.NotificationFeedbackType.Error);
       }
-      Alert.alert('Authentication Failed', err.message || 'Please try again');
+      Alert.alert("Authentication Failed", err.message || "Please try again");
     }
   };
 
   const toggleMode = () => {
     clearError();
     setIsSignUp(!isSignUp);
-    if (Platform.OS !== 'web') {
+    if (Platform.OS !== "web") {
       Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
     }
   };
@@ -91,17 +123,30 @@ export default function AuthScreen() {
       style={styles.gradient}
     >
       <KeyboardAvoidingView
-        behavior={Platform.OS === 'ios' ? 'padding' : 'height'}
+        behavior={Platform.OS === "ios" ? "padding" : "height"}
         style={styles.container}
       >
-        <View style={[styles.content, { paddingTop: insets.top + Spacing['4xl'] }]}>
+        <View
+          style={[styles.content, { paddingTop: insets.top + Spacing["4xl"] }]}
+        >
           {/* Logo */}
-          <Animated.View entering={FadeIn.duration(600)} style={styles.logoContainer}>
-            <View style={[styles.logoCircle, { backgroundColor: 'rgba(255, 255, 255, 0.98)' }, Shadows.xl]}>
+          <Animated.View
+            entering={FadeIn.duration(600)}
+            style={styles.logoContainer}
+          >
+            <View
+              style={[
+                styles.logoCircle,
+                { backgroundColor: "rgba(255, 255, 255, 0.98)" },
+                Shadows.xl,
+              ]}
+            >
               <Ionicons name="location" size={64} color={theme.secondary} />
             </View>
-            <Text style={[styles.appName, { color: '#FFFFFF' }]}>Anchor</Text>
-            <Text style={[styles.tagline, { color: 'rgba(255, 255, 255, 0.9)' }]}>
+            <Text style={[styles.appName, { color: "#FFFFFF" }]}>Anchor</Text>
+            <Text
+              style={[styles.tagline, { color: "rgba(255, 255, 255, 0.9)" }]}
+            >
               Your Premium Productivity Companion
             </Text>
           </Animated.View>
@@ -109,23 +154,46 @@ export default function AuthScreen() {
           {/* Auth Card */}
           <Animated.View
             entering={FadeInDown.delay(200).duration(400)}
-            style={[styles.authCard, { backgroundColor: theme.surface }, Shadows.xl]}
+            style={[
+              styles.authCard,
+              { backgroundColor: theme.surface },
+              Shadows.xl,
+            ]}
           >
             <Text style={[styles.cardTitle, { color: theme.text }]}>
-              {isSignUp ? 'Create Your Account' : 'Welcome Back'}
+              {isSignUp ? "Create Your Account" : "Welcome Back"}
             </Text>
 
             {error ? (
-              <View style={[styles.errorContainer, { backgroundColor: theme.error + '20' }]}>
+              <View
+                style={[
+                  styles.errorContainer,
+                  { backgroundColor: theme.error + "20" },
+                ]}
+              >
                 <Ionicons name="alert-circle" size={16} color={theme.error} />
-                <Text style={[styles.errorText, { color: theme.error }]}>{error.message}</Text>
+                <Text style={[styles.errorText, { color: theme.error }]}>
+                  {error.message}
+                </Text>
               </View>
             ) : null}
 
             {/* Name Input (Sign Up Only) */}
             {isSignUp && (
-              <View style={[styles.inputContainer, { backgroundColor: theme.background, borderColor: theme.border }]}>
-                <Ionicons name="person-outline" size={20} color={theme.textMuted} />
+              <View
+                style={[
+                  styles.inputContainer,
+                  {
+                    backgroundColor: theme.background,
+                    borderColor: theme.border,
+                  },
+                ]}
+              >
+                <Ionicons
+                  name="person-outline"
+                  size={20}
+                  color={theme.textMuted}
+                />
                 <TextInput
                   style={[styles.input, { color: theme.text }]}
                   placeholder="Full Name"
@@ -139,7 +207,15 @@ export default function AuthScreen() {
             )}
 
             {/* Email Input */}
-            <View style={[styles.inputContainer, { backgroundColor: theme.background, borderColor: theme.border }]}>
+            <View
+              style={[
+                styles.inputContainer,
+                {
+                  backgroundColor: theme.background,
+                  borderColor: theme.border,
+                },
+              ]}
+            >
               <Ionicons name="mail-outline" size={20} color={theme.textMuted} />
               <TextInput
                 style={[styles.input, { color: theme.text }]}
@@ -155,8 +231,20 @@ export default function AuthScreen() {
             </View>
 
             {/* Password Input */}
-            <View style={[styles.inputContainer, { backgroundColor: theme.background, borderColor: theme.border }]}>
-              <Ionicons name="lock-closed-outline" size={20} color={theme.textMuted} />
+            <View
+              style={[
+                styles.inputContainer,
+                {
+                  backgroundColor: theme.background,
+                  borderColor: theme.border,
+                },
+              ]}
+            >
+              <Ionicons
+                name="lock-closed-outline"
+                size={20}
+                color={theme.textMuted}
+              />
               <TextInput
                 style={[styles.input, { color: theme.text }]}
                 placeholder="Password"
@@ -172,7 +260,7 @@ export default function AuthScreen() {
                 hitSlop={10}
               >
                 <Ionicons
-                  name={showPassword ? 'eye-off-outline' : 'eye-outline'}
+                  name={showPassword ? "eye-off-outline" : "eye-outline"}
                   size={20}
                   color={theme.textMuted}
                 />
@@ -193,7 +281,7 @@ export default function AuthScreen() {
                 <ActivityIndicator color="#FFFFFF" />
               ) : (
                 <Text style={styles.authButtonText}>
-                  {isSignUp ? 'Create Account' : 'Sign In'}
+                  {isSignUp ? "Create Account" : "Sign In"}
                 </Text>
               )}
             </Pressable>
@@ -205,17 +293,24 @@ export default function AuthScreen() {
               disabled={isLoading}
             >
               <Text style={[styles.toggleText, { color: theme.textSecondary }]}>
-                {isSignUp ? 'Already have an account? ' : "Don't have an account? "}
+                {isSignUp
+                  ? "Already have an account? "
+                  : "Don't have an account? "}
                 <Text style={[styles.toggleLink, { color: theme.secondary }]}>
-                  {isSignUp ? 'Sign In' : 'Sign Up'}
+                  {isSignUp ? "Sign In" : "Sign Up"}
                 </Text>
               </Text>
             </Pressable>
           </Animated.View>
 
           {/* Footer */}
-          <Animated.View entering={FadeInDown.delay(400).duration(400)} style={styles.footer}>
-            <Text style={[styles.footerText, { color: 'rgba(255, 255, 255, 0.7)' }]}>
+          <Animated.View
+            entering={FadeInDown.delay(400).duration(400)}
+            style={styles.footer}
+          >
+            <Text
+              style={[styles.footerText, { color: "rgba(255, 255, 255, 0.7)" }]}
+            >
               Secure authentication powered by Supabase
             </Text>
           </Animated.View>
@@ -235,42 +330,42 @@ const styles = StyleSheet.create({
   content: {
     flex: 1,
     paddingHorizontal: Spacing.xl,
-    paddingBottom: Spacing['4xl'],
+    paddingBottom: Spacing["4xl"],
   },
   logoContainer: {
-    alignItems: 'center',
-    marginBottom: Spacing['4xl'],
+    alignItems: "center",
+    marginBottom: Spacing["4xl"],
   },
   logoCircle: {
     width: 120,
     height: 120,
     borderRadius: 60,
-    justifyContent: 'center',
-    alignItems: 'center',
+    justifyContent: "center",
+    alignItems: "center",
     marginBottom: Spacing.lg,
   },
   appName: {
-    fontSize: Typography.size['4xl'],
+    fontSize: Typography.size["4xl"],
     fontWeight: Typography.weight.bold,
     marginBottom: Spacing.xs,
   },
   tagline: {
     fontSize: Typography.size.base,
-    textAlign: 'center',
+    textAlign: "center",
   },
   authCard: {
-    borderRadius: BorderRadius['2xl'],
+    borderRadius: BorderRadius["2xl"],
     padding: Spacing.xl,
   },
   cardTitle: {
-    fontSize: Typography.size['2xl'],
+    fontSize: Typography.size["2xl"],
     fontWeight: Typography.weight.bold,
     marginBottom: Spacing.lg,
-    textAlign: 'center',
+    textAlign: "center",
   },
   errorContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     gap: Spacing.sm,
     padding: Spacing.md,
     borderRadius: BorderRadius.md,
@@ -281,8 +376,8 @@ const styles = StyleSheet.create({
     flex: 1,
   },
   inputContainer: {
-    flexDirection: 'row',
-    alignItems: 'center',
+    flexDirection: "row",
+    alignItems: "center",
     borderWidth: 1,
     borderRadius: BorderRadius.lg,
     paddingHorizontal: Spacing.md,
@@ -297,17 +392,17 @@ const styles = StyleSheet.create({
   authButton: {
     paddingVertical: Spacing.lg,
     borderRadius: BorderRadius.lg,
-    alignItems: 'center',
+    alignItems: "center",
     marginTop: Spacing.sm,
   },
   authButtonText: {
-    color: '#FFFFFF',
+    color: "#FFFFFF",
     fontSize: Typography.size.md,
     fontWeight: Typography.weight.semibold,
   },
   toggleButton: {
     marginTop: Spacing.md,
-    alignItems: 'center',
+    alignItems: "center",
   },
   toggleText: {
     fontSize: Typography.size.sm,
@@ -316,12 +411,12 @@ const styles = StyleSheet.create({
     fontWeight: Typography.weight.semibold,
   },
   footer: {
-    marginTop: 'auto',
-    alignItems: 'center',
+    marginTop: "auto",
+    alignItems: "center",
     paddingTop: Spacing.xl,
   },
   footerText: {
     fontSize: Typography.size.xs,
-    textAlign: 'center',
+    textAlign: "center",
   },
 });

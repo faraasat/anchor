@@ -9,6 +9,7 @@ import {
   Pressable,
   ActivityIndicator,
   Dimensions,
+  Platform,
 } from 'react-native';
 import { Ionicons } from '@expo/vector-icons';
 import { LinearGradient } from 'expo-linear-gradient';
@@ -180,8 +181,16 @@ Be specific, reference actual tasks when possible, and maintain a supportive, no
     onClose();
   };
 
+  const presentationStyle = Platform.OS === 'ios' ? 'pageSheet' : 'overFullScreen';
+  const isTransparent = presentationStyle !== 'pageSheet';
+
   return (
-    <Modal visible={visible} animationType="slide" presentationStyle="pageSheet" transparent>
+    <Modal
+      visible={visible}
+      animationType="slide"
+      presentationStyle={presentationStyle}
+      transparent={isTransparent}
+    >
       <View style={styles.overlay}>
         <Animated.View
           entering={SlideInDown.duration(400).springify()}

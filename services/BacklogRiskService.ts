@@ -206,10 +206,12 @@ Provide 3 specific recommendations. Format as JSON:
       const response = await newell.chat.ask({
         prompt,
         systemMessage:
-          'You are a task management expert. Provide practical recommendations to reduce backlog risk.',
+          'You are a task management expert. Provide practical recommendations to reduce backlog risk. Return ONLY valid JSON, no markdown or explanations.',
       });
 
-      const parsed = JSON.parse(response);
+      const { extractJSON } = await import('@/lib/groq');
+      const jsonStr = extractJSON(response);
+      const parsed = JSON.parse(jsonStr);
       return Array.isArray(parsed) ? parsed : this.getFallbackRecommendations(reminders, score);
     } catch (error) {
       console.error('Error generating recommendations:', error);

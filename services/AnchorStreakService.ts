@@ -5,13 +5,49 @@ import type { Reminder } from '@/types/reminder';
 
 export class AnchorStreakService {
   /**
+   * Map DB row (snake_case) to AnchorStreak (camelCase)
+   */
+  private static mapFromDb(row: any): AnchorStreak {
+    return {
+      userId: row.user_id,
+      currentStreak: row.current_streak,
+      longestStreak: row.longest_streak,
+      streakStartDate: row.streak_start_date,
+      lastCompletionDate: row.last_completion_date,
+      totalCompletions: row.total_completions,
+      unlockedRewards: row.unlocked_rewards,
+      nextMilestone: {
+        days: row.next_milestone_days || 7,
+        reward: row.next_milestone_reward || 'bronze-badge',
+      },
+    };
+  }
+
+  /**
+   * Map AnchorStreak (camelCase) to DB row (snake_case)
+   */
+  private static mapToDb(streak: AnchorStreak): any {
+    return {
+      user_id: streak.userId,
+      current_streak: streak.currentStreak,
+      longest_streak: streak.longestStreak,
+      streak_start_date: streak.streakStartDate,
+      last_completion_date: streak.lastCompletionDate,
+      total_completions: streak.totalCompletions,
+      unlocked_rewards: streak.unlockedRewards,
+      next_milestone_days: streak.nextMilestone?.days,
+      next_milestone_reward: streak.nextMilestone?.reward,
+    };
+  }
+
+  /**
    * Get user's current streak
    */
   static async getStreak(userId: string): Promise<AnchorStreak> {
     const { data, error } = await supabase
       .from('anchor_streaks')
       .select('*')
-      .eq('userId', userId)
+      .eq('user_id', userId)
       .single();
 
     if (error || !data) {
@@ -19,7 +55,7 @@ export class AnchorStreakService {
       return await this.initializeStreak(userId);
     }
 
-    return data;
+    return this.mapFromDb(data);
   }
 
   /**
@@ -42,9 +78,21 @@ export class AnchorStreakService {
       },
     };
 
+    // Ensure profile exists before creating streak
+    const { data: profile } = await supabase
+      .from('profiles')
+      .select('id')
+      .eq('id', userId)
+      .single();
+
+    if (!profile) {
+      console.warn('Profile not found for user, cannot create streak');
+      return newStreak;
+    }
+
     const { error } = await supabase
       .from('anchor_streaks')
-      .insert(newStreak);
+      .insert(this.mapToDb(newStreak));
 
     if (error) console.error('Error initializing streak:', error);
 
@@ -110,8 +158,8 @@ export class AnchorStreakService {
 
     await supabase
       .from('anchor_streaks')
-      .update(updatedStreak)
-      .eq('userId', userId);
+      .update(this.mapToDb(updatedStreak))
+      .eq('user_id', userId);
 
     return updatedStreak;
   }

@@ -17,9 +17,15 @@ import Animated, { FadeIn, FadeInDown, FadeOut } from 'react-native-reanimated';
 import { LinearGradient } from 'expo-linear-gradient';
 import { BlurView } from 'expo-blur';
 import * as Haptics from 'expo-haptics';
-import Purchases, { PurchasesPackage } from 'react-native-purchases';
+import type { PurchasesPackage } from 'react-native-purchases';
 import { useTheme, useColorScheme } from '@/hooks/useColorScheme';
 import { Spacing, BorderRadius, Typography, Shadows } from '@/constants/theme';
+import {
+  getMockOfferings,
+  getOfferings,
+  purchasePackage,
+  restorePurchases,
+} from '@/utils/revenueCat';
 
 interface EnhancedPaywallModalProps {
   visible: boolean;
@@ -81,8 +87,9 @@ export function EnhancedPaywallModal({ visible, onClose, onPurchaseComplete }: E
   const loadOfferings = async () => {
     try {
       setLoading(true);
-      const offerings = await Purchases.getOfferings();
-      const availablePackages = offerings.current?.availablePackages ?? [];
+      const offerings = await getOfferings();
+      const fallbackOfferings = getMockOfferings();
+      const availablePackages = offerings?.availablePackages ?? fallbackOfferings.availablePackages;
       setPackages(availablePackages);
 
       // Auto-select annual package (best value)
@@ -108,10 +115,10 @@ export function EnhancedPaywallModal({ visible, onClose, onPurchaseComplete }: E
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Medium);
       }
 
-      const { customerInfo } = await Purchases.purchasePackage(selectedPackage);
+      const customerInfo = await purchasePackage(selectedPackage);
 
       // Check if user has pro entitlement
-      if (customerInfo.entitlements.active['pro']) {
+      if (customerInfo && customerInfo.entitlements.active['pro']) {
         if (Platform.OS !== 'web') {
           Haptics.notificationAsync(Haptics.NotificationFeedbackType.Success);
         }
@@ -142,9 +149,9 @@ export function EnhancedPaywallModal({ visible, onClose, onPurchaseComplete }: E
         Haptics.impactAsync(Haptics.ImpactFeedbackStyle.Light);
       }
 
-      const customerInfo = await Purchases.restorePurchases();
+      const customerInfo = await restorePurchases();
 
-      if (customerInfo.entitlements.active['pro']) {
+      if (customerInfo && customerInfo.entitlements.active['pro']) {
         onPurchaseComplete();
         onClose();
         Alert.alert('Success', 'Your purchases have been restored');

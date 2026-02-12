@@ -157,10 +157,12 @@ Provide 3 specific, actionable suggestions to help reduce procrastination. Forma
       const response = await newell.chat.ask({
         prompt,
         systemMessage:
-          'You are a productivity coach specializing in behavioral psychology. Provide practical, empathetic suggestions.',
+          'You are a productivity coach specializing in behavioral psychology. Provide practical, empathetic suggestions. Return ONLY valid JSON, no markdown or explanations.',
       });
 
-      const parsed = JSON.parse(response);
+      const { extractJSON } = await import('@/lib/groq');
+      const jsonStr = extractJSON(response);
+      const parsed = JSON.parse(jsonStr);
       return Array.isArray(parsed) ? parsed : [];
     } catch (error) {
       console.error('Error generating suggestions:', error);
